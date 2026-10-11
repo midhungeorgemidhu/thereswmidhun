@@ -7,9 +7,17 @@
   <meta name="viewport" content="width=1280, initial-scale=0.3, maximum-scale=3.0, user-scalable=yes">
   <script>
     (function () {
-      function setDesktopScale() {
+      function applyMobileDesktopConfig() {
         var targetWidth = 1280;
-        var screenW = window.screen.width || 375;
+        var screenW = window.screen.width || window.innerWidth || 375;
+        var isMobile = (screenW < targetWidth) || (window.innerWidth < targetWidth) || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        if (isMobile) {
+          document.documentElement.classList.add('mobile-mode');
+        } else {
+          document.documentElement.classList.remove('mobile-mode');
+        }
+
         if (screenW < targetWidth) {
           var scale = (screenW / targetWidth).toFixed(4);
           var vp = document.querySelector('meta[name="viewport"]');
@@ -18,10 +26,10 @@
           }
         }
       }
-      setDesktopScale();
-      window.addEventListener('resize', setDesktopScale);
+      applyMobileDesktopConfig();
+      window.addEventListener('resize', applyMobileDesktopConfig);
       window.addEventListener('orientationchange', function () {
-        setTimeout(setDesktopScale, 120);
+        setTimeout(applyMobileDesktopConfig, 120);
       });
     })();
   </script>
@@ -356,12 +364,15 @@
         transform: translateY(0) rotate(0deg);
         opacity: 0;
       }
+
       5% {
         opacity: var(--snow-opacity, 0.8);
       }
+
       90% {
         opacity: var(--snow-opacity, 0.8);
       }
+
       100% {
         transform: translateY(110vh) rotate(360deg);
         opacity: 0;
@@ -369,15 +380,20 @@
     }
 
     @keyframes snowSway {
-      0%, 100% {
+
+      0%,
+      100% {
         margin-left: 0;
       }
+
       25% {
         margin-left: 15px;
       }
+
       50% {
         margin-left: -10px;
       }
+
       75% {
         margin-left: 20px;
       }
@@ -1535,10 +1551,10 @@
     }
 
     body {
-      min-width: 0;
+      min-width: 1280px;
       overflow-x: hidden;
       background: var(--cream);
-      font-size: 16px
+      font-size: 1rem;
     }
 
     body::before {
@@ -2476,7 +2492,7 @@
       }
     }
   </style>
-<style>
+  <style>
     /* ========================================================
        2026 ROYAL LUXURY WEDDING STYLES & ANIMATION EFFECTS
     ======================================================== */
@@ -2527,12 +2543,15 @@
         transform: translateY(105vh) scale(0.6);
         opacity: 0;
       }
+
       20% {
         opacity: 0.85;
       }
+
       80% {
         opacity: 0.85;
       }
+
       100% {
         transform: translateY(-20px) scale(1.2);
         opacity: 0;
@@ -2580,8 +2599,16 @@
       color: #C6A15B;
       font-size: 11px;
     }
-    .invitation-inner-border::before { top: 6px; left: 8px; }
-    .invitation-inner-border::after { bottom: 6px; right: 8px; }
+
+    .invitation-inner-border::before {
+      top: 6px;
+      left: 8px;
+    }
+
+    .invitation-inner-border::after {
+      bottom: 6px;
+      right: 8px;
+    }
 
     .inv-crest-svg {
       width: 86px;
@@ -2691,8 +2718,15 @@
     }
 
     @keyframes sealPulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.04); }
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.04);
+      }
     }
 
     .wax-seal-inner {
@@ -2735,8 +2769,15 @@
     }
 
     @keyframes fadeHint {
-      0%, 100% { opacity: 0.6; }
-      50% { opacity: 1; }
+
+      0%,
+      100% {
+        opacity: 0.6;
+      }
+
+      50% {
+        opacity: 1;
+      }
     }
 
     .inv-actions {
@@ -2786,8 +2827,14 @@
     }
 
     @keyframes btnShineAnim {
-      0% { left: -60%; }
-      35%, 100% { left: 140%; }
+      0% {
+        left: -60%;
+      }
+
+      35%,
+      100% {
+        left: 140%;
+      }
     }
 
     .btn-skip-invitation {
@@ -2834,14 +2881,28 @@
       color: #223A4D;
     }
 
+    /* Dynamic Floating Highlights Gallery */
     .luxury-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: stretch;
+      gap: 24px;
+      max-width: 1160px;
+      margin: 0 auto;
     }
 
-    .photo-grid .ph {
-      border-radius: 14px;
+    /* Reset legacy nth-child margin offsets so rows stay perfectly even */
+    .luxury-grid .ph:nth-child(n) {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+    }
+
+    .luxury-grid .ph {
+      flex: 0 1 calc(33.333% - 18px);
+      min-width: 280px;
+      max-width: 360px;
+      border-radius: 16px;
       overflow: hidden;
       position: relative;
       cursor: pointer;
@@ -2851,9 +2912,15 @@
       aspect-ratio: 3/4;
     }
 
-    .photo-grid .ph:hover {
+    .luxury-grid .ph:hover {
       transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 24px 50px -10px rgba(34, 58, 77, 0.32), 0 0 20px rgba(198, 161, 91, 0.3);
+      box-shadow: 0 26px 54px -10px rgba(34, 58, 77, 0.32), 0 0 22px rgba(198, 161, 91, 0.32);
+    }
+
+    /* Ensure captions are clearly legible across devices */
+    .luxury-grid .ph .cap {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* Midhun's Crown Favorite */
@@ -3042,6 +3109,7 @@
     .flip-thumbs-strip::-webkit-scrollbar {
       height: 5px;
     }
+
     .flip-thumbs-strip::-webkit-scrollbar-thumb {
       background: var(--powder);
       border-radius: 10px;
@@ -3158,76 +3226,95 @@
         columns: 2 150px;
         column-gap: 12px;
       }
+
       .masonry-album-wrap {
         margin-top: 40px;
         padding-top: 16px;
       }
+
       .album-divider {
         gap: 10px;
         margin-bottom: 20px;
       }
+
       .album-ornament {
         font-size: 0.82rem;
       }
+
       .album-filters {
         gap: 6px;
         margin-bottom: 20px;
       }
+
       .filter-btn {
         padding: 7px 14px;
         font-size: 0.70rem;
       }
+
       .masonry-card {
         margin-bottom: 12px;
         border-radius: 10px;
       }
+
       .masonry-card-badge {
         font-size: 0.58rem;
         padding: 3px 7px;
         top: 8px;
         left: 8px;
       }
+
       .masonry-zoom-icon {
         display: none;
       }
+
       .masonry-card-overlay {
         opacity: 1;
         background: linear-gradient(0deg, rgba(20, 36, 48, 0.75) 0%, transparent 60%);
       }
+
       .masonry-card-title {
         font-size: 0.82rem;
       }
+
       .masonry-card-desc {
         font-size: 0.66rem;
         display: none;
       }
+
       .flip-stage-wrapper {
         max-width: 100%;
       }
+
       .flip-thumbs-strip {
         gap: 6px;
         padding: 10px 4px 6px;
         margin-top: 10px;
       }
+
       .thumb-item {
         flex: 0 0 44px;
         height: 58px;
         border-radius: 6px;
       }
+
       .flip-controls {
         margin-top: 16px;
         gap: 8px;
       }
+
       .flip-btn.next {
         padding: 10px 18px;
         font-size: 0.72rem;
       }
+
       .flip-caption-overlay {
         padding: 16px 12px 10px;
       }
+
       .flip-tag {
         font-size: 0.58rem;
       }
+
       .flip-title {
         font-size: 0.88rem;
       }
@@ -3238,6 +3325,7 @@
         columns: 2 130px;
         column-gap: 8px;
       }
+
       .masonry-card {
         margin-bottom: 8px;
       }
@@ -3359,8 +3447,13 @@
     }
 
     @keyframes lightboxFadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
 
     .lightbox-backdrop {
@@ -3431,13 +3524,27 @@
       transform: translateY(-50%) scale(1.1);
     }
 
-    .lightbox-nav-btn.lb-prev { left: -26px; }
-    .lightbox-nav-btn.lb-next { right: -26px; }
+    .lightbox-nav-btn.lb-prev {
+      left: -26px;
+    }
+
+    .lightbox-nav-btn.lb-next {
+      right: -26px;
+    }
 
     @media (max-width: 768px) {
-      .lightbox-nav-btn.lb-prev { left: 4px; }
-      .lightbox-nav-btn.lb-next { right: 4px; }
-      .lightbox-close { top: -20px; right: 10px; }
+      .lightbox-nav-btn.lb-prev {
+        left: 4px;
+      }
+
+      .lightbox-nav-btn.lb-next {
+        right: 4px;
+      }
+
+      .lightbox-close {
+        top: -20px;
+        right: 10px;
+      }
     }
 
     .lightbox-content {
@@ -3525,7 +3632,264 @@
       border: 2px solid rgba(198, 161, 91, 0.45);
       box-shadow: 0 20px 50px rgba(34, 58, 77, 0.3), 0 0 30px rgba(198, 161, 91, 0.25);
     }
-</style>
+
+    /* ========================================================
+       2.5X MOBILE FONT SCALING (DESKTOP ALIGNMENT + CRYSTAL CLEAR TEXT)
+       Scales typography by 2.5x on mobile screens for effortless readability
+       while preserving exact desktop layout, alignment, and image sizes.
+    ======================================================== */
+    html.mobile-mode {
+      font-size: 40px !important; /* 2.5x standard 16px root font size (1rem = 40px) */
+    }
+
+    @media (max-width: 1024px) and (pointer: coarse) {
+      html {
+        font-size: 40px !important;
+      }
+    }
+
+    html.mobile-mode body {
+      font-size: 1rem !important; /* 40px base text size */
+      line-height: 1.65;
+    }
+
+    /* Royal Invitation overlay on mobile */
+    html.mobile-mode .opening-invitation-wrap {
+      max-width: 840px;
+      width: 94%;
+    }
+
+    html.mobile-mode .invitation-card {
+      padding: 56px 44px;
+    }
+
+    html.mobile-mode .inv-eyebrow {
+      font-size: 0.84rem;
+      letter-spacing: 0.32em;
+    }
+
+    html.mobile-mode .inv-names {
+      font-size: 3.8rem;
+      margin: 8px 0 20px;
+    }
+
+    html.mobile-mode .inv-invite-text {
+      max-width: 95%;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    html.mobile-mode .inv-details {
+      padding: 22px 0;
+      margin-bottom: 30px;
+    }
+
+    html.mobile-mode .inv-date {
+      font-size: 1.18rem;
+    }
+
+    html.mobile-mode .inv-time {
+      font-size: 0.88rem;
+      margin-top: 6px;
+    }
+
+    html.mobile-mode .inv-venue {
+      font-size: 0.95rem;
+      margin-top: 10px;
+    }
+
+    html.mobile-mode .wax-seal-btn {
+      width: 136px;
+      height: 136px;
+    }
+
+    html.mobile-mode .wax-seal-text {
+      font-size: 0.82rem;
+    }
+
+    html.mobile-mode .btn-open-invitation {
+      font-size: 0.96rem;
+      padding: 22px 54px;
+      border-radius: 60px;
+    }
+
+    html.mobile-mode .btn-skip-invitation {
+      font-size: 0.92rem;
+      margin-top: 24px;
+    }
+
+    /* Countdown blocks */
+    html.mobile-mode .count-box {
+      width: 180px;
+      padding: 26px 14px;
+      border-radius: 16px;
+    }
+
+    html.mobile-mode .count-box .num {
+      font-size: 2.35rem;
+    }
+
+    html.mobile-mode .count-box .lbl {
+      font-size: 0.76rem;
+      letter-spacing: 0.2em;
+      margin-top: 8px;
+    }
+
+    /* Header navigation */
+    html.mobile-mode .header {
+      min-height: 84px;
+      padding: 18px 36px;
+    }
+
+    html.mobile-mode .nav-links a {
+      font-size: 1.05rem;
+      letter-spacing: 0.12em;
+    }
+
+    /* Hero section */
+    html.mobile-mode .hero-inner .eyebrow {
+      font-size: 0.88rem;
+    }
+
+    html.mobile-mode .hero-names {
+      font-size: 5.4rem;
+    }
+
+    html.mobile-mode .hero-tagline {
+      font-size: 1.35rem;
+    }
+
+    html.mobile-mode .hero-date-big {
+      font-size: 1.45rem;
+    }
+
+    html.mobile-mode .hero-venue {
+      font-size: 1.12rem;
+    }
+
+    html.mobile-mode .hero-cta {
+      font-size: 0.95rem;
+      padding: 22px 50px;
+    }
+
+    /* Favorite Highlights Badges & Captions */
+    html.mobile-mode .fav-badge-pill {
+      font-size: 0.82rem;
+      padding: 12px 28px;
+    }
+
+    html.mobile-mode .crown-star-badge {
+      font-size: 0.78rem;
+      padding: 8px 18px;
+    }
+
+    html.mobile-mode .fav-mini-star {
+      font-size: 0.74rem;
+      padding: 8px 16px;
+    }
+
+    html.mobile-mode .photo-grid .ph .cap strong {
+      font-size: 1.05rem;
+    }
+
+    html.mobile-mode .photo-grid .ph .cap span {
+      font-size: 0.82rem;
+    }
+
+    /* Story & Family */
+    html.mobile-mode .story-text h4 {
+      font-size: 1.45rem;
+      line-height: 1.7;
+    }
+
+    html.mobile-mode .story-text p {
+      font-size: 1.05rem;
+      line-height: 1.75;
+    }
+
+    /* Location, RSVP & Forms */
+    html.mobile-mode .location-name {
+      font-size: 1.15rem;
+    }
+
+    html.mobile-mode .map-btn {
+      font-size: 1rem;
+      padding: 18px 34px;
+      border-radius: 12px;
+    }
+
+    html.mobile-mode .wishes-form input,
+    html.mobile-mode .wishes-form textarea {
+      font-size: 1rem;
+      padding: 20px 24px;
+    }
+
+    html.mobile-mode .wishes-form button {
+      font-size: 1.05rem;
+      padding: 20px 42px;
+    }
+
+    /* Master Album Flipbook & Masonry */
+    html.mobile-mode .album-divider {
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    html.mobile-mode .album-ornament {
+      font-size: 1.05rem;
+    }
+
+    html.mobile-mode .album-filters {
+      gap: 12px;
+      margin-bottom: 34px;
+    }
+
+    html.mobile-mode .filter-btn {
+      padding: 14px 28px;
+      font-size: 0.82rem;
+      border-radius: 40px;
+    }
+
+    html.mobile-mode .flip-btn {
+      padding: 16px 28px;
+      font-size: 0.85rem;
+    }
+
+    html.mobile-mode .flip-title {
+      font-size: 1.18rem;
+    }
+
+    html.mobile-mode .flip-tag {
+      font-size: 0.78rem;
+    }
+
+    html.mobile-mode .flip-count {
+      font-size: 0.88rem;
+    }
+
+    html.mobile-mode .masonry-card-title {
+      font-size: 1.02rem;
+    }
+
+    html.mobile-mode .masonry-card-badge {
+      font-size: 0.74rem;
+      padding: 6px 14px;
+    }
+
+    /* Lightbox Modal */
+    html.mobile-mode .lightbox-title {
+      font-size: 1.4rem;
+    }
+
+    html.mobile-mode .lightbox-desc {
+      font-size: 1.02rem;
+    }
+
+    html.mobile-mode .lightbox-count {
+      font-size: 0.88rem;
+    }
+  </style>
 </head>
 
 <body>
@@ -3540,17 +3904,19 @@
         <div class="invitation-inner-border"></div>
         <div class="invitation-crest">
           <svg viewBox="0 0 100 40" fill="none" class="inv-crest-svg">
-            <path d="M10 20 C 30 20, 35 10, 50 10 C 65 10, 70 20, 90 20" stroke="#C6A15B" stroke-width="1.4" stroke-linecap="round"/>
-            <circle cx="50" cy="10" r="3.5" fill="#C6A15B"/>
-            <path d="M42 22 C 46 26, 54 26, 58 22" stroke="#C6A15B" stroke-width="1.2" fill="none"/>
-            <circle cx="28" cy="18" r="1.5" fill="#C6A15B"/>
-            <circle cx="72" cy="18" r="1.5" fill="#C6A15B"/>
+            <path d="M10 20 C 30 20, 35 10, 50 10 C 65 10, 70 20, 90 20" stroke="#C6A15B" stroke-width="1.4"
+              stroke-linecap="round" />
+            <circle cx="50" cy="10" r="3.5" fill="#C6A15B" />
+            <path d="M42 22 C 46 26, 54 26, 58 22" stroke="#C6A15B" stroke-width="1.2" fill="none" />
+            <circle cx="28" cy="18" r="1.5" fill="#C6A15B" />
+            <circle cx="72" cy="18" r="1.5" fill="#C6A15B" />
           </svg>
         </div>
         <div class="inv-eyebrow">The Holy Sacrament of Matrimony</div>
         <h1 class="inv-names">Theres <span>&amp;</span> Midhun</h1>
-        <p class="inv-invite-text">With joyful hearts, we warmly invite you to celebrate our union as we exchange sacred vows before God and our loved ones.</p>
-        
+        <p class="inv-invite-text">With joyful hearts, we warmly invite you to celebrate our union as we exchange sacred
+          vows before God and our loved ones.</p>
+
         <div class="inv-details">
           <div class="inv-date">Saturday • November 21, 2026</div>
           <div class="inv-time">10:00 AM IST</div>
@@ -3593,7 +3959,8 @@
       <li><a href="#location">Location</a></li>
       <li><a href="#wishes">Wishes</a></li>
       <li><a href="#gallery">Gallery</a></li>
-      <li><a href="javascript:void(0)" onclick="replayInvitation()" style="color: var(--gold);" title="Replay Invitation Experience">✉️ Invitation</a></li>
+      <li><a href="javascript:void(0)" onclick="replayInvitation()" style="color: var(--gold);"
+          title="Replay Invitation Experience">✉️ Invitation</a></li>
     </ul>
   </header>
 
@@ -3673,13 +4040,14 @@
         <div class="lbl">Seconds</div>
       </div>
     </div>
-        <div class="favorites-showcase reveal">
+    <div class="favorites-showcase reveal">
       <div class="fav-badge-bar">
         <span class="fav-badge-pill">⭐ Midhun &amp; Theres' Favorite Highlights</span>
       </div>
       <div class="photo-grid luxury-grid">
         <!-- 1. CROWN FAVORITE: SSK02723.jpg (MIDHUN'S FAV) -->
-        <div class="ph crown-favorite" data-full="SSK02723.jpg" onclick="openPhotoInLightbox(0)" title="Click to view full photo">
+        <div class="ph crown-favorite" data-full="SSK02723.jpg" onclick="openPhotoInLightbox(0)"
+          title="Click to view full photo">
           <span class="crown-star-badge">❤️ Midhun's Favorite</span>
           <img src="SSK02723.jpg" alt="Our Forever Beginning - Midhun's Favorite" loading="eager" fetchpriority="high">
           <div class="cap">
@@ -3778,12 +4146,14 @@
       <p>A glimpse into our joyous moments together — tap to watch in full quality.</p>
     </div>
     <div class="insta-reels-container reveal">
-      <div class="insta-card featured-reel" data-title="The Proposal &amp; Moments" onclick="openReelModal('video1.mp4', 'The Proposal &amp; Our Journey')">
+      <div class="insta-card featured-reel" data-title="The Proposal &amp; Moments"
+        onclick="openReelModal('video1.mp4', 'The Proposal &amp; Our Journey')">
         <video id="reelVideo1" src="video1.mp4" preload="metadata" autoplay muted loop playsinline></video>
         <div class="insta-overlay"></div>
         <span class="insta-badge">Exclusive Teaser</span>
         <button class="insta-sound-btn" onclick="toggleSound(event, this)">
-          <svg class="sound-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+          <svg class="sound-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+            fill="none">
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
             <line x1="23" y1="9" x2="17" y2="15"></line>
             <line x1="17" y1="9" x2="23" y2="15"></line>
@@ -4000,7 +4370,8 @@
             <div class="flip-title" id="flipTitle">Our Forever Beginning</div>
           </div>
           <div class="flip-count" id="flipCount">1 / 37</div>
-          <button class="flip-expand-btn" title="View Fullscreen Lightbox" aria-label="View Fullscreen" onclick="event.stopPropagation(); openCurrentFlipInLightbox();">
+          <button class="flip-expand-btn" title="View Fullscreen Lightbox" aria-label="View Fullscreen"
+            onclick="event.stopPropagation(); openCurrentFlipInLightbox();">
             <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path>
             </svg>
@@ -4010,7 +4381,8 @@
 
       <div class="flip-controls">
         <button class="flip-btn prev" id="prevPhoto" aria-label="Previous Photo">&#8249;</button>
-        <button class="flip-btn autoplay-btn" id="autoPlayBtn" aria-label="Toggle Auto Slideshow" onclick="toggleAutoSlideshow()">
+        <button class="flip-btn autoplay-btn" id="autoPlayBtn" aria-label="Toggle Auto Slideshow"
+          onclick="toggleAutoSlideshow()">
           <span id="autoPlayIcon">▶</span> <span id="autoPlayText">Auto Play</span>
         </button>
         <button class="flip-btn next" id="nextPhoto" aria-label="Next Photo">Next Photo &#8250;</button>
@@ -4030,11 +4402,16 @@
 
       <!-- Category Filters -->
       <div class="album-filters" id="albumFilters">
-        <button class="filter-btn active" data-filter="all" onclick="filterGallery('all', this)">All Photos (37)</button>
-        <button class="filter-btn" data-filter="favorite" onclick="filterGallery('favorite', this)">⭐ Favorites (5)</button>
-        <button class="filter-btn" data-filter="portrait" onclick="filterGallery('portrait', this)">Portraits (11)</button>
-        <button class="filter-btn" data-filter="romantic" onclick="filterGallery('romantic', this)">Romantic (11)</button>
-        <button class="filter-btn" data-filter="candid" onclick="filterGallery('candid', this)">Candid &amp; Moments (10)</button>
+        <button class="filter-btn active" data-filter="all" onclick="filterGallery('all', this)">All Photos
+          (37)</button>
+        <button class="filter-btn" data-filter="favorite" onclick="filterGallery('favorite', this)">⭐ Favorites
+          (5)</button>
+        <button class="filter-btn" data-filter="portrait" onclick="filterGallery('portrait', this)">Portraits
+          (11)</button>
+        <button class="filter-btn" data-filter="romantic" onclick="filterGallery('romantic', this)">Romantic
+          (11)</button>
+        <button class="filter-btn" data-filter="candid" onclick="filterGallery('candid', this)">Candid &amp; Moments
+          (10)</button>
       </div>
 
       <!-- Dynamic Masonry Container -->
@@ -4057,9 +4434,11 @@
 
   <footer>
     <div class="script">Theres &amp; Midhun</div>
-    <p style="margin-top: 8px; font-size: 0.9rem; letter-spacing: 0.08em; opacity: 0.85;">November 21, 2026 • St. Mary's Forane Church, Alakode</p>
+    <p style="margin-top: 8px; font-size: 0.9rem; letter-spacing: 0.08em; opacity: 0.85;">November 21, 2026 • St. Mary's
+      Forane Church, Alakode</p>
     <div style="margin-top: 22px;">
-      <button type="button" onclick="replayInvitation()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(198, 161, 91, 0.5); color: #DFBF7A; padding: 10px 24px; border-radius: 30px; font-family: 'Jost', sans-serif; font-size: 0.76rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;">
+      <button type="button" onclick="replayInvitation()"
+        style="background: rgba(255,255,255,0.08); border: 1px solid rgba(198, 161, 91, 0.5); color: #DFBF7A; padding: 10px 24px; border-radius: 30px; font-family: 'Jost', sans-serif; font-size: 0.76rem; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;">
         ✉️ Replay Royal Invitation
       </button>
     </div>
@@ -4163,7 +4542,7 @@
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
   </script>
-  
+
   <script>
     /* ========================================================
        MASTER WEDDING PHOTO COLLECTION (ALL 37 PHOTOS)
@@ -4175,7 +4554,7 @@
       { src: 'SSK00261.jpg', title: 'Radiant Laughter', tag: 'favorite', desc: 'Pure joy and spontaneous laughter together', isFav: true },
       { src: 'SSK03062.jpg', title: 'Soul in Harmony', tag: 'favorite', desc: 'Standing side by side, looking at forever', isFav: true },
       { src: 'SSK03001.jpg', title: 'Timeless Embrace', tag: 'favorite', desc: 'Warmth, love, and a quiet promise', isFav: true },
-      
+
       // THE COMPLETE COLLECTION
       { src: 'SSK00056.jpg', title: 'Gentle Smile', tag: 'portrait', desc: 'Captured in the gentle morning breeze' },
       { src: 'SSK00072.jpg', title: 'Tender Glance', tag: 'romantic', desc: 'Every glance tells our beautiful story' },
@@ -4206,9 +4585,7 @@
       { src: 'SSK03450.jpg', title: 'Heartfelt Harmony', tag: 'portrait', desc: 'Together in faith and devotion' },
       { src: 'SSK09901.jpg', title: 'Celebration of Us', tag: 'candid', desc: 'Counting down the days to November 21' },
       { src: 'SSK09976.jpg', title: 'Forever More', tag: 'romantic', desc: 'To love, cherish, and honor always' },
-      { src: 'pic1.jpeg', title: 'The Announcement', tag: 'candid', desc: 'The day we announced our union' },
-      { src: 'image3.jpeg', title: 'Beginning of Forever', tag: 'portrait', desc: 'A love story written in grace' },
-      { src: 'car.jpeg', title: 'The Getaway', tag: 'candid', desc: 'Driving toward our new life together' }
+      { src: 'pic1.jpeg', title: 'The Announcement', tag: 'candid', desc: 'The day we announced our union' }
     ];
 
     /* ========================================================
@@ -4408,8 +4785,8 @@
         card.onclick = () => openPhotoInLightbox(idx);
 
         const isFav = photo.isFav;
-        const badgeHtml = isFav 
-          ? '<span class="masonry-card-badge fav">⭐ Favorite</span>' 
+        const badgeHtml = isFav
+          ? '<span class="masonry-card-badge fav">⭐ Favorite</span>'
           : `<span class="masonry-card-badge">${photo.tag}</span>`;
 
         card.innerHTML = `
@@ -4837,7 +5214,7 @@
     <div class="lightbox-backdrop" onclick="closeLightbox()"></div>
     <div class="lightbox-container">
       <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close photo view">&times;</button>
-      
+
       <button class="lightbox-nav-btn lb-prev" onclick="lightboxPrev()" aria-label="Previous photo">&#8249;</button>
       <button class="lightbox-nav-btn lb-next" onclick="lightboxNext()" aria-label="Next photo">&#8250;</button>
 
