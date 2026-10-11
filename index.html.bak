@@ -1,0 +1,3283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <!-- Optimized viewport for standard responsive rendering across mobile devices -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
+  <title>Theres &amp; Midhun — Our Wedding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Great+Vibes&family=Marck+Script&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Jost:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <style>
+    :root {
+      --powder-deep: #7FA8C9;
+      --powder: #AFCBDD;
+      --powder-pale: #E7F1F7;
+      --cream: #FBF7EF;
+      --ink: #223A4D;
+      --ink-soft: #51697c;
+      --gold: #C6A15B;
+      --blush: #E7CFC1;
+      --white: #ffffff;
+      --shadow: 0 20px 50px -20px rgba(34, 58, 77, 0.25);
+      --ease: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--cream);
+      color: var(--ink-soft);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Playfair Display', serif;
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .script {
+      font-family: 'Marck Script', cursive;
+      font-weight: 400;
+    }
+
+    .eyebrow {
+      font-family: 'Jost', sans-serif;
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      font-size: .72rem;
+      color: #08090a;
+      font-weight: 600;
+    }
+
+    .section {
+      position: relative;
+      padding: 110px 6vw;
+      max-width: 1280px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    /* ============ DYNAMIC BRANCHES ============ */
+    .section-branch {
+      position: absolute;
+      top: 0;
+      width: 250px;
+      height: 250px;
+      background-image: url('home.jpg');
+      background-size: 900px auto;
+      background-repeat: no-repeat;
+      mix-blend-mode: multiply;
+      opacity: 0.85;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .section-branch.left {
+      left: 0;
+      background-position: top left;
+      -webkit-mask-image: radial-gradient(circle at top left, black 40%, transparent 70%);
+      mask-image: radial-gradient(circle at top left, black 40%, transparent 70%);
+    }
+
+    .section-branch.right {
+      right: 0;
+      background-position: top left;
+      transform: scaleX(-1);
+      -webkit-mask-image: radial-gradient(circle at top left, black 40%, transparent 70%);
+      mask-image: radial-gradient(circle at top left, black 40%, transparent 70%);
+    }
+
+    .section-head,
+    .countdown,
+    .photo-grid,
+    .masonry,
+    .story-line,
+    .video-grid,
+    .roadmap-container,
+    .family-cols,
+    .wishes-wrap,
+    .loc-wrap,
+    .flipbook {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-head {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 60px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-top: 10px;
+    }
+
+    .section-head p {
+      margin-top: 14px;
+      font-size: 1.02rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity .9s var(--ease), transform .9s var(--ease);
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .wave {
+      display: block;
+      width: 100%;
+      line-height: 0;
+    }
+
+    .wave svg {
+      width: 100%;
+      height: 70px;
+      display: block;
+    }
+
+    /* ============ NAV ============ */
+    header.nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px 5vw;
+      transition: background .4s var(--ease), padding .4s var(--ease), box-shadow .4s var(--ease);
+    }
+
+    header.nav.scrolled {
+      background: rgba(242, 245, 248, 0.92);
+      backdrop-filter: blur(10px);
+      padding: 14px 5vw;
+      box-shadow: 0 6px 24px -12px rgba(34, 58, 77, .25);
+    }
+
+    .nav-mark {
+      font-family: 'Marck Script', cursive;
+      font-size: 1.5rem;
+      color: var(--ink);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: .78rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--ink);
+      font-weight: 600;
+      position: relative;
+      padding-bottom: 4px;
+      text-shadow: 0px 1px 3px rgba(255, 255, 255, 0.8), 0px 0px 5px rgba(226, 238, 245, 0.5);
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 1px;
+      width: 0;
+      background: var(--ink);
+      transition: width .35s var(--ease);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-links a.active {
+      color: var(--ink);
+    }
+
+    .burger {
+      display: none;
+    }
+
+    .dot-nav {
+      position: fixed;
+      right: 26px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 400;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .dot-nav a {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 1px solid var(--powder-deep);
+      display: block;
+      position: relative;
+    }
+
+    .dot-nav a.active {
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+
+    .dot-nav a .tip {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      white-space: nowrap;
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      background: var(--ink);
+      color: var(--cream);
+      padding: 4px 10px;
+      border-radius: 4px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .25s;
+    }
+
+    .dot-nav a:hover .tip {
+      opacity: 1;
+    }
+
+    /* ============ HERO ============ */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      padding: 120px 6vw;
+      overflow: hidden;
+      background-color: var(--cream);
+    }
+
+    .hero-scene {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      background: url('home.jpg') bottom center / cover no-repeat;
+      opacity: 1;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .shimmer-field {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 2;
+    }
+
+    .snowflake {
+      position: absolute;
+      top: -60px;
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 16px;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+      text-shadow:
+        0 0 6px rgba(255, 255, 255, 0.6),
+        0 0 12px rgba(198, 161, 91, 0.15);
+      animation: snowFall linear infinite, snowSway ease-in-out infinite;
+      will-change: transform, opacity;
+    }
+
+    @keyframes snowFall {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
+      5% {
+        opacity: var(--snow-opacity, 0.8);
+      }
+      90% {
+        opacity: var(--snow-opacity, 0.8);
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @keyframes snowSway {
+      0%, 100% {
+        margin-left: 0;
+      }
+      25% {
+        margin-left: 15px;
+      }
+      50% {
+        margin-left: -10px;
+      }
+      75% {
+        margin-left: 20px;
+      }
+    }
+
+    .hero-inner,
+    .scroll-cue {
+      position: relative;
+      z-index: 4;
+    }
+
+    .hero-inner {
+      max-width: 860px;
+      position: relative;
+      padding: clamp(20px, 4vw, 40px) 16px;
+      background: transparent !important;
+      border: none !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    .hero-monogram-badge {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .hero-crest-svg {
+      width: 100px;
+      height: 26px;
+      filter: drop-shadow(0 1px 6px rgba(255, 255, 255, 0.95)) drop-shadow(0 2px 8px rgba(198, 161, 91, 0.5));
+    }
+
+    .hero-inner .eyebrow {
+      display: block;
+      margin-bottom: 14px;
+      letter-spacing: .35em;
+      font-size: .82rem;
+      font-weight: 600;
+      color: #1a354b;
+      text-transform: uppercase;
+      text-shadow: 0 1px 10px rgba(255, 255, 255, 0.95), 0 0 18px rgba(255, 255, 255, 0.85);
+    }
+
+    .hero-names {
+      font-family: 'Great Vibes', 'Alex Brush', 'Marck Script', cursive;
+      font-style: normal;
+      font-weight: 400;
+      font-size: clamp(4.4rem, 11vw, 8rem);
+      color: #142e42;
+      line-height: 1.18;
+      letter-spacing: 0.01em;
+      text-shadow:
+        0 0 25px rgba(255, 255, 255, 0.95),
+        0 2px 10px rgba(255, 255, 255, 0.9),
+        0 4px 22px rgba(198, 161, 91, 0.35),
+        0 2px 6px rgba(18, 40, 58, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.08em 0.28em;
+    }
+
+    .hero-name-item {
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+
+    .hero-name-item:hover {
+      transform: translateY(-2px);
+    }
+
+    .hero-amp-container {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin: 0 0.12em;
+    }
+
+    .hero-amp {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 500;
+      font-size: clamp(2.6rem, 7vw, 4.6rem);
+      line-height: 1;
+      background: linear-gradient(135deg, #ECC880 0%, #C6A15B 50%, #9e7529 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 8px rgba(255, 255, 255, 0.95)) drop-shadow(0 2px 10px rgba(198, 161, 91, 0.6));
+      transform: translateY(-2px);
+    }
+
+    .hero-tagline-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .tagline-ornament {
+      height: 1px;
+      width: clamp(28px, 6vw, 60px);
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .hero-tagline {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: clamp(1.2rem, 2.3vw, 1.5rem);
+      color: #1a354b;
+      letter-spacing: 0.08em;
+      text-shadow: 0 1px 12px rgba(255, 255, 255, 0.95), 0 0 20px rgba(255, 255, 255, 0.85);
+    }
+
+    .hero-divider {
+      display: none;
+    }
+
+    .hero-date-block {
+      text-align: center;
+      background: transparent !important;
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      padding: 10px 20px;
+      margin: 18px auto 0;
+      max-width: 500px;
+    }
+
+    .hero-date-big {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+      letter-spacing: .15em;
+      color: #142e42;
+      text-transform: uppercase;
+      text-shadow: 0 1px 12px rgba(255, 255, 255, 0.95), 0 0 20px rgba(255, 255, 255, 0.85);
+    }
+
+    .hero-venue {
+      margin-top: 6px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 500;
+      font-size: .95rem;
+      letter-spacing: .05em;
+      color: #1a354b;
+      text-shadow: 0 1px 10px rgba(255, 255, 255, 0.95), 0 0 16px rgba(255, 255, 255, 0.85);
+    }
+
+    .hero-cta {
+      display: inline-block;
+      margin-top: 38px;
+      padding: 16px 40px;
+      border-radius: 40px;
+      background: rgba(255, 255, 255, .75);
+      border: 1px solid rgba(255, 255, 255, .9);
+      backdrop-filter: blur(6px);
+      font-family: 'Jost', sans-serif;
+      font-weight: 600;
+      font-size: .82rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--ink);
+      box-shadow: 0 12px 30px -14px rgba(34, 58, 77, .35);
+      transition: background .3s, transform .3s;
+    }
+
+    .hero-cta:hover {
+      background: rgba(255, 255, 255, 1);
+      transform: translateY(-2px);
+    }
+
+    .scroll-cue {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--powder-deep);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .scroll-cue .line {
+      width: 1px;
+      height: 34px;
+      background: var(--powder-deep);
+      animation: pulseLine 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseLine {
+
+      0%,
+      100% {
+        opacity: .2;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    /* ============ OTHER SECTIONS ============ */
+    #save-the-date {
+      background: var(--white);
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+
+    .count-box {
+      background: var(--powder-pale);
+      border-radius: 10px;
+      width: 110px;
+      padding: 22px 0;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .count-box .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.3rem;
+      color: var(--ink);
+    }
+
+    .count-box .lbl {
+      font-size: .68rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--powder-deep);
+      margin-top: 6px;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .photo-grid .ph {
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 3/4;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+      background: var(--powder-pale);
+    }
+
+    .photo-grid .ph:nth-child(2) {
+      aspect-ratio: 3/4;
+      margin-top: 34px;
+    }
+
+    .photo-grid .ph:nth-child(4) {
+      margin-top: -34px;
+    }
+
+    .photo-grid img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .6s var(--ease);
+    }
+
+    .photo-grid .ph:hover img {
+      transform: scale(1.08);
+    }
+
+    .photo-grid .ph .cap {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 14px;
+      background: linear-gradient(0deg, rgba(34, 58, 77, .65), transparent);
+      color: #fff;
+      font-size: .75rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity .35s;
+    }
+
+    .photo-grid .ph:hover .cap {
+      opacity: 1;
+    }
+
+    #engagement {
+      background: var(--powder-pale);
+    }
+
+    .masonry {
+      columns: 4 220px;
+      column-gap: 18px;
+    }
+
+    .masonry .m-item {
+      break-inside: avoid;
+      margin-bottom: 18px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .masonry img {
+      width: 100%;
+      transition: transform .6s var(--ease);
+    }
+
+    .masonry .m-item:hover img {
+      transform: scale(1.06);
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(20, 32, 42, .92);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 40px;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 85vh;
+      border-radius: 6px;
+    }
+
+    .lightbox .close {
+      position: absolute;
+      top: 26px;
+      right: 34px;
+      color: #fff;
+      font-size: 2rem;
+      cursor: pointer;
+      font-family: 'Playfair Display', serif;
+    }
+
+    #story {
+      background: var(--cream);
+    }
+
+    .story-line {
+      position: relative;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .story-line::before {
+      content: "";
+      position: absolute;
+      left: 20px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--powder);
+    }
+
+    .story-item {
+      position: relative;
+      padding-left: 64px;
+      margin-bottom: 56px;
+    }
+
+    .story-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .story-item .dot {
+      position: absolute;
+      left: 12px;
+      top: 4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 2px solid var(--gold);
+    }
+
+    .story-item .story-eyebrow {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .story-item h3 {
+      font-size: 1.35rem;
+      margin-bottom: 8px;
+    }
+
+    .story-item p {
+      font-size: .98rem;
+      max-width: 560px;
+    }
+
+    #videos {
+      background: var(--powder-pale);
+    }
+
+    #journey {
+      background: var(--white);
+      position: relative;
+    }
+
+    .roadmap-container {
+      max-width: 1100px;
+      margin: 50px auto 0;
+      position: relative;
+      padding: 0 20px;
+    }
+
+    .roadmap-line-bg {
+      position: absolute;
+      top: 30px;
+      left: 50px;
+      right: 50px;
+      height: 2px;
+      background: rgba(175, 203, 221, 0.3);
+      z-index: 1;
+    }
+
+    .roadmap-line-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background: var(--gold);
+      transition: width 1.2s cubic-bezier(.22, 1, .36, 1);
+    }
+
+    .roadmap {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      z-index: 2;
+      gap: 20px;
+    }
+
+    .rm-step {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      transition: all 0.4s var(--ease);
+    }
+
+    .rm-num {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 2px solid var(--powder);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink-soft);
+      position: relative;
+      z-index: 3;
+      transition: all 0.4s ease;
+      box-shadow: 0 0 0 4px var(--white);
+    }
+
+    .rm-step h3 {
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+      transition: all 0.4s ease;
+      color: var(--ink);
+      display: inline-block;
+      position: relative;
+    }
+
+    .rm-step .rm-date {
+      font-size: .78rem;
+      color: var(--powder-deep);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      font-weight: 600;
+      transition: all 0.4s ease;
+      position: relative;
+    }
+
+    .rm-step p {
+      font-size: .88rem;
+      color: var(--ink-soft);
+      padding: 0 8px;
+      transition: opacity 0.4s ease;
+    }
+
+    .rm-step.completed .rm-num {
+      border-color: var(--gold);
+      background: var(--cream);
+      color: var(--gold);
+      box-shadow: 0 0 15px rgba(198, 161, 91, 0.2), 0 0 0 4px var(--white);
+    }
+
+    .rm-step.completed h3,
+    .rm-step.completed .rm-date {
+      color: #a0b0be;
+    }
+
+    .rm-step.completed h3::after,
+    .rm-step.completed .rm-date::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 100%;
+      height: 1px;
+      background: rgba(160, 176, 190, 0.6);
+      transform: scaleX(1);
+      transform-origin: left;
+      transition: transform 0.5s ease;
+    }
+
+    .rm-step.completed p {
+      opacity: 0.6;
+    }
+
+    #family {
+      background: var(--powder-pale);
+    }
+
+    .family-cols {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+    }
+
+    .family-card {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 40px 34px;
+      box-shadow: var(--shadow);
+    }
+
+    .family-card h3 {
+      text-align: center;
+      font-size: 1.3rem;
+      margin-bottom: 6px;
+    }
+
+    .family-card .sub {
+      text-align: center;
+      display: block;
+      margin-bottom: 26px;
+    }
+
+    .member {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--powder-pale);
+    }
+
+    .member:last-child {
+      border-bottom: none;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--powder), var(--blush));
+      flex-shrink: 0;
+    }
+
+    .member .m-name {
+      font-family: 'Playfair Display', serif;
+      color: var(--ink);
+      font-size: 1rem;
+    }
+
+    .member .m-rel {
+      font-size: .75rem;
+      color: var(--powder-deep);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    #wishes {
+      background: var(--white);
+    }
+
+    .wishes-wrap {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .wish-form {
+      background: var(--powder-pale);
+      border-radius: 14px;
+      padding: 36px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 50px;
+    }
+
+    .wish-form input,
+    .wish-form textarea {
+      font-family: 'Jost', sans-serif;
+      font-size: .95rem;
+      border: 1px solid var(--powder);
+      background: var(--white);
+      border-radius: 8px;
+      padding: 13px 16px;
+      color: var(--ink);
+      resize: vertical;
+    }
+
+    .wish-form input:focus,
+    .wish-form textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+    }
+
+    .wish-form textarea {
+      min-height: 110px;
+    }
+
+    .wish-form .btn {
+      align-self: center;
+      margin-top: 4px;
+    }
+
+    #wishThanks {
+      display: none;
+      text-align: center;
+      color: var(--powder-deep);
+      font-size: .9rem;
+      margin-top: -6px;
+    }
+
+    #wishThanks.show {
+      display: block;
+    }
+
+    .wish-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .wish-card {
+      background: var(--powder-pale);
+      border-left: 3px solid var(--gold);
+      border-radius: 8px;
+      padding: 18px 22px;
+    }
+
+    .wish-card .w-name {
+      font-family: 'Playfair Display', serif;
+      color: var(--ink);
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+
+    .wish-card .w-msg {
+      font-size: .9rem;
+    }
+
+    .wish-empty {
+      text-align: center;
+      font-size: .85rem;
+      opacity: .6;
+    }
+
+    #location {
+      background: var(--cream);
+    }
+
+    .wedding-location-section {
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+      background-color: #faf9f6;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .location-card {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .location-card h2 {
+      color: #2c3e50;
+      margin-bottom: 8px;
+      font-size: 26px;
+    }
+
+    .location-name {
+      color: #7f8c8d;
+      font-size: 16px;
+      margin-bottom: 20px;
+    }
+
+    .map-container {
+      width: 100%;
+      height: 250px;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .location-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-top: 15px;
+      text-align: left;
+    }
+
+    .qr-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .qr-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      margin-bottom: 5px;
+    }
+
+    .link-box {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .link-box p {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 12px;
+    }
+
+    .map-btn {
+      display: inline-block;
+      background-color: #3498db;
+      color: #ffffff;
+      padding: 10px 18px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 14px;
+      text-align: center;
+      transition: background-color 0.2s ease;
+    }
+
+    .map-btn:hover {
+      background-color: #2980b9;
+    }
+
+    .insta-reels-container {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .insta-card {
+      position: relative;
+      width: 100%;
+      max-width: 270px;
+      aspect-ratio: 9 / 16;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: #000;
+    }
+
+    .insta-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+    }
+
+    .insta-card video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .insta-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom,
+          rgba(0, 0, 0, 0.4) 0%,
+          transparent 35%,
+          rgba(0, 0, 0, 0.75) 100%);
+      pointer-events: none;
+    }
+
+    .insta-badge {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .insta-sound-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      z-index: 3;
+    }
+
+    .insta-sound-btn:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    .insta-title {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+      color: #fff;
+      font-size: 15px;
+      font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+      z-index: 2;
+    }
+
+    .insta-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(10px);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .insta-modal-content {
+      position: relative;
+      background: #111;
+      padding: 20px;
+      border-radius: 24px;
+      max-width: 400px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+
+    .insta-modal-content video {
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      border-radius: 16px;
+      object-fit: cover;
+    }
+
+    .insta-modal-content h3 {
+      color: #fff;
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .insta-close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      color: #aaa;
+      font-size: 32px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .insta-close-btn:hover {
+      color: #fff;
+    }
+
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .story-img-wrapper {
+      position: relative;
+      padding: 15px;
+      border: 1px solid var(--accent-warm, #C6A15B);
+    }
+
+    .story-img-wrapper img {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .story-text {
+      padding: 20px 0;
+    }
+
+    .story-text h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: var(--ink);
+    }
+
+    .story-text p {
+      margin-bottom: 20px;
+      color: var(--ink-soft);
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    #gallery {
+      background: var(--powder-pale);
+    }
+
+    .flipbook {
+      max-width: 480px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .flip-stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3/4;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      perspective: 1600px;
+      background: var(--white);
+    }
+
+    .flip-stage img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform-origin: left center;
+      transition: transform .45s ease-in, opacity .45s ease-in;
+      backface-visibility: hidden;
+    }
+
+    .flip-stage img.turning {
+      transform: rotateY(-100deg);
+      opacity: .2;
+    }
+
+    .flip-count {
+      position: absolute;
+      bottom: 14px;
+      right: 16px;
+      background: rgba(34, 58, 77, .65);
+      color: #fff;
+      font-size: .72rem;
+      letter-spacing: .08em;
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
+
+    .flip-controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .flip-btn {
+      border: none;
+      cursor: pointer;
+      font-family: 'Jost', sans-serif;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: .8rem;
+      transition: background .3s, transform .2s;
+    }
+
+    .flip-btn.next {
+      background: var(--ink);
+      color: var(--cream);
+      padding: 13px 28px;
+      border-radius: 30px;
+    }
+
+    .flip-btn.next:hover {
+      background: var(--powder-deep);
+      transform: translateX(2px);
+    }
+
+    .flip-btn.prev {
+      background: transparent;
+      border: 1px solid var(--powder-deep);
+      color: var(--ink);
+      width: 44px;
+      height: 44px;
+      padding: 0;
+      border-radius: 50%;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flip-btn.prev:hover {
+      background: var(--white);
+    }
+
+    .music-player-btn {
+      position: fixed;
+      bottom: 25px;
+      left: 25px;
+      width: 50px;
+      height: 50px;
+      background: var(--white);
+      border: 1px solid var(--powder);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      z-index: 1500;
+      transition: all 0.3s ease;
+    }
+
+    .music-player-btn:hover {
+      transform: scale(1.08);
+      border-color: var(--gold);
+    }
+
+    .music-player-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--ink);
+      transition: fill 0.3s ease;
+    }
+
+    .music-player-btn.playing {
+      border-color: var(--gold);
+      animation: pulseGlow 2s infinite alternate;
+    }
+
+    @keyframes pulseGlow {
+      0% {
+        box-shadow: 0 0 5px rgba(198, 161, 91, 0.3);
+      }
+
+      100% {
+        box-shadow: 0 0 18px rgba(198, 161, 91, 0.7);
+      }
+    }
+
+    footer {
+      text-align: center;
+      padding: 70px 6vw 50px;
+      background: var(--ink);
+      color: var(--powder-pale);
+    }
+
+    footer .script {
+      font-size: 2.4rem;
+      color: var(--white);
+    }
+
+    footer p {
+      margin-top: 14px;
+      font-size: .85rem;
+      opacity: .75;
+    }
+  </style>
+  <style>
+    /* 2026 refinement — presentation-only overrides; invitation content and media remain unchanged. */
+    :root {
+      --paper: #fffdf9;
+      --mist: #f4f8fa;
+      --night: #1c3448;
+      --line: rgba(127, 168, 201, .28);
+      --shadow: 0 24px 70px -34px rgba(34, 58, 77, .33)
+    }
+
+    html {
+      scroll-padding-top: 78px
+    }
+
+    body {
+      min-width: 0;
+      overflow-x: hidden;
+      background: var(--cream);
+      font-size: 16px
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(circle at 8% 12%, rgba(175, 203, 221, .20), transparent 27rem), radial-gradient(circle at 94% 42%, rgba(231, 207, 193, .18), transparent 24rem)
+    }
+
+    .section {
+      max-width: 1440px;
+      padding: clamp(76px, 9vw, 132px) clamp(22px, 7vw, 104px);
+      overflow: clip
+    }
+
+    .section::after {
+      content: "";
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      border: 1px solid rgba(198, 161, 91, .12);
+      border-radius: 50%;
+      right: -210px;
+      bottom: -210px;
+      pointer-events: none
+    }
+
+    .section-head {
+      max-width: 720px;
+      margin-bottom: clamp(38px, 5vw, 64px)
+    }
+
+    .section-head h2 {
+      font-size: clamp(2.35rem, 4.5vw, 4rem);
+      letter-spacing: -.035em;
+      line-height: 1.08
+    }
+
+    .section-head p {
+      color: var(--ink-soft);
+      font-size: 1rem
+    }
+
+    .eyebrow {
+      color: var(--gold);
+      font-size: .68rem;
+      letter-spacing: .32em
+    }
+
+    header.nav {
+      min-width: 0;
+      padding: 18px clamp(20px, 5vw, 72px);
+      background: linear-gradient(180deg, rgba(255, 253, 249, .82), rgba(255, 253, 249, 0));
+      backdrop-filter: blur(3px)
+    }
+
+    header.nav.scrolled {
+      background: rgba(255, 253, 249, .88);
+      border-bottom: 1px solid rgba(127, 168, 201, .16);
+      box-shadow: 0 10px 34px -24px rgba(34, 58, 77, .32)
+    }
+
+    .nav-mark {
+      font-size: 1.8rem
+    }
+
+    .nav-links {
+      gap: clamp(12px, 2vw, 30px)
+    }
+
+    .nav-links a {
+      font-size: .68rem;
+      letter-spacing: .12em
+    }
+
+    .dot-nav {
+      right: 18px;
+      gap: 12px
+    }
+
+    .dot-nav a {
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, .55);
+      box-shadow: 0 2px 10px rgba(34, 58, 77, .12)
+    }
+
+    #home {
+      min-width: 0;
+      min-height: min(920px, 100svh);
+      padding: 150px 24px 100px;
+      background: linear-gradient(120deg, rgba(251, 247, 239, .82), rgba(251, 247, 239, .18))
+    }
+
+    #home::after {
+      content: "";
+      position: absolute;
+      inset: 22px;
+      border: 1px solid rgba(255, 255, 255, .62);
+      z-index: 2;
+      pointer-events: none
+    }
+
+    .hero-scene {
+      opacity: .5;
+      filter: saturate(.82) contrast(.95)
+    }
+
+    .hero-inner {
+      max-width: 820px;
+    }
+
+    .hero-names {
+      letter-spacing: 0.01em;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1.1rem, 2vw, 1.4rem)
+    }
+
+    .hero-divider {
+      display: none;
+    }
+
+    .hero-date-big {
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      letter-spacing: .16em
+    }
+
+    .hero-cta,
+    .btn {
+      background: var(--ink);
+      color: var(--white);
+      border: 1px solid var(--ink);
+      box-shadow: 0 16px 28px -18px rgba(34, 58, 77, .75)
+    }
+
+    .hero-cta:hover,
+    .btn:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--white)
+    }
+
+    #save-the-date,
+    #journey,
+    #wishes {
+      background: var(--paper)
+    }
+
+    #galleryus,
+    #family,
+    #videos {
+      background: linear-gradient(135deg, #edf5f8, #f8faf9)
+    }
+
+    .countdown {
+      gap: 14px;
+      margin-bottom: clamp(42px, 6vw, 72px)
+    }
+
+    .count-box {
+      width: clamp(78px, 11vw, 126px);
+      padding: 23px 8px;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, .9);
+      background: linear-gradient(145deg, #fff, #e5f0f5);
+      box-shadow: 0 18px 34px -24px rgba(34, 58, 77, .42)
+    }
+
+    .count-box .num {
+      font-size: clamp(1.8rem, 3vw, 2.65rem)
+    }
+
+    .photo-grid {
+      gap: clamp(10px, 1.7vw, 22px)
+    }
+
+    .photo-grid .ph {
+      border-radius: 18px;
+      border: 5px solid rgba(255, 255, 255, .68);
+      box-shadow: var(--shadow)
+    }
+
+    .photo-grid .ph:nth-child(2) {
+      margin-top: 42px
+    }
+
+    .photo-grid .ph:nth-child(4) {
+      margin-top: -42px
+    }
+
+    .photo-grid .ph .cap {
+      opacity: 1;
+      padding: 28px 15px 14px;
+      font-size: .65rem
+    }
+
+    .story-grid {
+      gap: clamp(30px, 6vw, 80px);
+      max-width: 1110px;
+      margin: auto
+    }
+
+    .story-img-wrapper {
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow)
+    }
+
+    .story-img-wrapper::after {
+      border-color: var(--gold)
+    }
+
+    .story-text h3 {
+      font-size: clamp(1.8rem, 3vw, 2.7rem);
+      line-height: 1.15
+    }
+
+    .story-text p {
+      font-size: 1.03rem
+    }
+
+    .insta-reels-container {
+      gap: clamp(14px, 2.5vw, 30px);
+      padding: 0
+    }
+
+    .insta-card {
+      border-radius: 22px;
+      border: 5px solid rgba(255, 255, 255, .65);
+      box-shadow: var(--shadow)
+    }
+
+    .insta-card:hover {
+      transform: translateY(-10px) rotate(.4deg)
+    }
+
+    .insta-badge {
+      background: rgba(28, 52, 72, .58)
+    }
+
+    .roadmap-container {
+      max-width: 1200px
+    }
+
+    .roadmap-line-bg {
+      background: rgba(127, 168, 201, .22)
+    }
+
+    .rm-num {
+      width: 68px;
+      height: 68px;
+      border-color: rgba(127, 168, 201, .45);
+      box-shadow: 0 0 0 6px var(--paper), 0 10px 26px -16px rgba(34, 58, 77, .5)
+    }
+
+    .rm-step h3 {
+      font-size: 1.2rem
+    }
+
+    .rm-step p {
+      max-width: 185px;
+      margin: auto
+    }
+
+    .rm-step:not(.completed) .rm-num {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #fff
+    }
+
+    .family-cols {
+      gap: 28px
+    }
+
+    .family-card {
+      border-radius: 22px;
+      padding: clamp(28px, 4vw, 46px);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, .85)
+    }
+
+    .family-card h3 {
+      font-size: 1.55rem
+    }
+
+    .member {
+      padding: 16px 0
+    }
+
+    .avatar {
+      width: 46px;
+      height: 46px;
+      background: linear-gradient(135deg, #e9f2f6, var(--blush));
+      border: 1px solid rgba(198, 161, 91, .35)
+    }
+
+    .wishes-wrap {
+      max-width: 760px
+    }
+
+    .wish-form {
+      border-radius: 22px;
+      padding: clamp(24px, 5vw, 48px);
+      background: linear-gradient(145deg, #edf5f8, #fafdfd);
+      box-shadow: var(--shadow)
+    }
+
+    .wish-form input,
+    .wish-form textarea {
+      border-radius: 12px;
+      border-color: rgba(127, 168, 201, .4);
+      padding: 15px 17px
+    }
+
+    .wish-card {
+      border-radius: 12px;
+      background: var(--mist);
+      box-shadow: 0 14px 25px -25px rgba(34, 58, 77, .6)
+    }
+
+    .wedding-location-section {
+      padding: 0;
+      background: transparent;
+      font-family: 'Jost', sans-serif
+    }
+
+    .location-card {
+      max-width: 900px;
+      padding: clamp(20px, 4vw, 42px);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, .9)
+    }
+
+    .location-card h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--ink);
+      font-size: clamp(2rem, 3vw, 2.6rem)
+    }
+
+    .location-name {
+      color: var(--ink-soft)
+    }
+
+    .map-container {
+      height: clamp(260px, 36vw, 390px);
+      border-radius: 15px;
+      box-shadow: none
+    }
+
+    .map-container iframe {
+      width: 100%;
+      height: 100%;
+      border: 0
+    }
+
+    .location-actions {
+      background: var(--mist);
+      padding: 18px;
+      border-radius: 15px
+    }
+
+    .qr-image {
+      border-radius: 10px
+    }
+
+    .map-btn {
+      background: var(--ink);
+      border-radius999px;
+      padding: 12px 22px
+    }
+
+    .map-btn:hover {
+      background: var(--gold)
+    }
+
+    .flipbook {
+      max-width: 650px;
+      margin: auto
+    }
+
+    .flip-stage {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow)
+    }
+
+    .flip-controls {
+      gap: 12px
+    }
+
+    .flip-btn {
+      border-radius: 999px
+    }
+
+    .music-player-btn {
+      right: 22px;
+      bottom: 22px;
+      width: 58px;
+      height: 58px;
+      border: 1px solid rgba(255, 255, 255, .9);
+      background: rgba(255, 253, 249, .93);
+      box-shadow: 0 14px 30px -15px rgba(34, 58, 77, .5)
+    }
+
+    footer {
+      min-width: 0;
+      padding: 62px 24px 42px;
+      background: var(--night)
+    }
+
+    @media (max-width:780px) {
+      html {
+        scroll-padding-top: 62px
+      }
+
+      header.nav {
+        padding: 13px 18px;
+        align-items: center
+      }
+
+      .nav-mark {
+        font-size: 1.5rem
+      }
+
+      .nav-links {
+        max-width: 70vw;
+        overflow-x: auto;
+        gap: 15px;
+        padding: 5px 0;
+        scrollbar-width: none
+      }
+
+      .nav-links::-webkit-scrollbar {
+        display: none
+      }
+
+      .nav-links a {
+        white-space: nowrap;
+        font-size: .58rem;
+        letter-spacing: .08em
+      }
+
+      .dot-nav {
+        display: none
+      }
+
+      #home {
+        min-height: 100svh;
+        padding: 112px 18px 72px
+      }
+
+      #home::after {
+        inset: 10px
+      }
+
+      .hero-inner {
+        padding: 32px 18px
+      }
+
+      .hero-inner .eyebrow {
+        margin-bottom: 15px;
+        letter-spacing: .23em
+      }
+
+      .hero-names {
+        font-size: clamp(3.2rem, 14vw, 4.6rem);
+        line-height: 1.18;
+        letter-spacing: 0.01em;
+      }
+
+      .hero-cta {
+        margin-top: 25px;
+        padding: 14px 27px
+      }
+
+      .scroll-cue {
+        bottom: 18px
+      }
+
+      .section {
+        padding: 72px 20px
+      }
+
+      .section-head {
+        margin-bottom: 36px
+      }
+
+      .section-head h2 {
+        font-size: 2.35rem
+      }
+
+      .section-branch {
+        width: 150px;
+        height: 150px;
+        opacity: .45
+      }
+
+      .countdown {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 11px
+      }
+
+      .count-box {
+        width: auto;
+        padding: 16px 6px
+      }
+
+      .photo-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px
+      }
+
+      .photo-grid .ph:nth-child(2) {
+        margin-top: 22px
+      }
+
+      .photo-grid .ph:nth-child(4) {
+        margin-top: -22px
+      }
+
+      .story-grid,
+      .family-cols {
+        grid-template-columns: 1fr;
+        gap: 28px
+      }
+
+      .story-img-wrapper {
+        max-width: 440px;
+        margin: auto
+      }
+
+      .insta-reels-container {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px
+      }
+
+      .insta-card {
+        border-width: 2px;
+        border-radius: 14px
+      }
+
+      .insta-badge,
+      .insta-sound-btn {
+        display: none
+      }
+
+      .insta-title {
+        font-size: 10px;
+        left: 9px;
+        right: 9px;
+        bottom: 10px
+      }
+
+      .roadmap-container {
+        padding: 0;
+        margin-top: 20px
+      }
+
+      .roadmap-line-bg {
+        left: 29px;
+        top: 28px;
+        bottom: 28px;
+        right: auto;
+        width: 2px;
+        height: auto
+      }
+
+      .roadmap-line-progress {
+        width: 100% !important;
+        height: 0;
+        transition: height 1.2s var(--ease)
+      }
+
+      .roadmap {
+        display: flex;
+        flex-direction: column;
+        gap: 0
+      }
+
+      .rm-step {
+        display: grid;
+        grid-template-columns: 58px 1fr;
+        text-align: left;
+        gap: 15px;
+        padding: 0 0 28px
+      }
+
+      .rm-num {
+        width: 58px;
+        height: 58px;
+        margin: 0
+      }
+
+      .rm-step-content {
+        padding-top: 4px
+      }
+
+      .rm-step p {
+        margin: 0;
+        padding: 0;
+        max-width: none
+      }
+
+      .family-card {
+        padding: 26px 20px
+      }
+
+      .member {
+        gap: 12px
+      }
+
+      .location-card {
+        padding: 16px
+      }
+
+      .location-actions {
+        align-items: flex-start;
+        gap: 14px
+      }
+
+      .qr-image {
+        width: 82px;
+        height: 82px
+      }
+
+      .link-box p {
+        font-size: .78rem
+      }
+
+      .map-btn {
+        padding: 10px 12px;
+        font-size: .75rem
+      }
+
+      .music-player-btn {
+        right: 15px;
+        bottom: 15px;
+        width: 52px;
+        height: 52px
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    /* ========================================================
+       STYLISH WEDDING MODAL & POPUP DIALOGS
+    ======================================================== */
+    .wedding-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(18, 32, 45, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 3000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s ease;
+    }
+
+    .wedding-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .wedding-modal-card {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      background: linear-gradient(155deg, #FFFFFF 0%, #FAF7F0 55%, #F4ECE0 100%);
+      border: 1px solid rgba(198, 161, 91, 0.45);
+      border-radius: 24px;
+      padding: 38px 30px 32px;
+      box-shadow: 0 25px 65px -15px rgba(22, 38, 51, 0.45), 0 0 40px rgba(198, 161, 91, 0.2);
+      text-align: center;
+      transform: scale(0.92) translateY(24px);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+
+    .wedding-modal-overlay.active .wedding-modal-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .wedding-modal-card::before,
+    .wedding-modal-card::after {
+      content: '';
+      position: absolute;
+      width: 44px;
+      height: 44px;
+      pointer-events: none;
+      border-color: rgba(198, 161, 91, 0.35);
+      border-style: solid;
+    }
+
+    .wedding-modal-card::before {
+      top: 12px;
+      left: 12px;
+      border-width: 1px 0 0 1px;
+      border-top-left-radius: 14px;
+    }
+
+    .wedding-modal-card::after {
+      bottom: 12px;
+      right: 12px;
+      border-width: 0 1px 1px 0;
+      border-bottom-right-radius: 14px;
+    }
+
+    .modal-close-btn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 1px solid rgba(198, 161, 91, 0.3);
+      background: rgba(255, 255, 255, 0.8);
+      color: var(--ink-soft);
+      font-size: 1.3rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      z-index: 5;
+    }
+
+    .modal-close-btn:hover {
+      background: var(--gold);
+      color: #fff;
+      border-color: var(--gold);
+      transform: rotate(90deg);
+    }
+
+    .modal-icon-badge {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFFDF8 0%, #F5E5C7 100%);
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px -5px rgba(198, 161, 91, 0.45);
+      position: relative;
+    }
+
+    .modal-icon-badge.success-badge {
+      animation: modalPulseRing 2.2s infinite;
+    }
+
+    @keyframes modalPulseRing {
+      0% {
+        box-shadow: 0 0 0 0 rgba(198, 161, 91, 0.55);
+      }
+
+      70% {
+        box-shadow: 0 0 0 16px rgba(198, 161, 91, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(198, 161, 91, 0);
+      }
+    }
+
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--ink);
+      margin-bottom: 2px;
+      font-weight: 600;
+    }
+
+    .modal-script {
+      font-family: 'Marck Script', cursive;
+      font-size: 1.35rem;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+
+    .modal-desc {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.95rem;
+      color: var(--ink-soft);
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+
+    .modal-preview-box {
+      background: rgba(231, 241, 247, 0.6);
+      border: 1px dashed rgba(127, 168, 201, 0.7);
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin: 16px 0 20px;
+      text-align: left;
+    }
+
+    .modal-preview-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--powder-deep);
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .modal-preview-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--ink);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .modal-preview-msg {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.92rem;
+      color: var(--ink-soft);
+      font-style: italic;
+      max-height: 90px;
+      overflow-y: auto;
+      word-break: break-word;
+      padding-left: 10px;
+      border-left: 2px solid var(--gold);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .modal-btn {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 12px 26px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+      outline: none;
+    }
+
+    .modal-btn-cancel {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--powder);
+      color: var(--ink-soft);
+    }
+
+    .modal-btn-cancel:hover {
+      background: var(--powder-pale);
+      color: var(--ink);
+    }
+
+    .modal-btn-primary {
+      background: linear-gradient(135deg, #C6A15B 0%, #b89146 100%);
+      color: #ffffff;
+      box-shadow: 0 8px 20px -6px rgba(198, 161, 91, 0.6);
+    }
+
+    .modal-btn-primary:hover {
+      background: linear-gradient(135deg, #d4ae67 0%, #c6a15b 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -6px rgba(198, 161, 91, 0.7);
+    }
+
+    .modal-btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .modal-btn-primary:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .celebrate-sparkles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .sparkle-dot {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--gold);
+      opacity: 0;
+      animation: sparkleFly 1.8s ease-out forwards;
+    }
+
+    @keyframes sparkleFly {
+      0% {
+        transform: translate(0, 0) scale(0);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(1.4);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header class="nav" id="siteNav">
+    <div class="nav-mark">T &amp; M</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#save-the-date">Save the Date</a></li>
+      <li><a href="#location">Location</a></li>
+      <li><a href="#journey">Journey</a></li>
+      <li><a href="#family">Family</a></li>
+      <li><a href="#wishes">Wishes</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+    </ul>
+  </header>
+
+  <nav class="dot-nav" id="dotNav">
+    <a href="#home"><span class="tip">Home</span></a>
+    <a href="#save-the-date"><span class="tip">Save the Date</span></a>
+    <a href="#engagement"><span class="tip">Engagement</span></a>
+    <a href="#story"><span class="tip">Our Story</span></a>
+    <a href="#videos"><span class="tip">Videos</span></a>
+    <a href="#journey"><span class="tip">Journey</span></a>
+    <a href="#family"><span class="tip">Family</span></a>
+    <a href="#wishes"><span class="tip">Wishes</span></a>
+    <a href="#location"><span class="tip">Location</span></a>
+    <a href="#gallery"><span class="tip">Gallery</span></a>
+  </nav>
+
+  <section id="home">
+    <div class="shimmer-field" id="shimmerField"></div>
+    <div class="hero-inner">
+      <div class="hero-monogram-badge">
+        <svg class="hero-crest-svg" viewBox="0 0 120 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 14 C 20 14, 28 6, 44 14 C 50 17, 54 17, 60 14 C 66 11, 70 11, 76 14 C 92 22, 100 14, 116 14"
+            stroke="#C6A15B" stroke-width="1.2" stroke-linecap="round" />
+          <circle cx="60" cy="14" r="3" fill="#C6A15B" />
+          <path d="M52 14 C50 8, 56 8, 54 14" stroke="#C6A15B" stroke-width="0.9" fill="none" />
+          <path d="M68 14 C66 8, 72 8, 70 14" stroke="#C6A15B" stroke-width="0.9" fill="none" />
+        </svg>
+      </div>
+      <span class="eyebrow">The Wedding Celebration</span>
+      <h1 class="hero-names">
+        <span class="hero-name-item hero-name-theres">Theres</span>
+        <span class="hero-amp-container">
+          <span class="hero-amp">&amp;</span>
+        </span>
+        <span class="hero-name-item hero-name-midhun">Midhun</span>
+      </h1>
+      <div class="hero-tagline-container">
+        <span class="tagline-ornament"></span>
+        <p class="hero-tagline">Are getting married</p>
+        <span class="tagline-ornament"></span>
+      </div>
+      <div class="hero-date-block">
+        <div class="hero-date-big">November 21, 2026</div>
+        <div class="hero-venue">St. Mary's Forane Church • Alakode, Kannur</div>
+      </div>
+      <a href="#journey" class="hero-cta">View Schedule</a>
+    </div>
+    <div class="hero-scene" role="img" aria-label="Watercolor illustration of the couple"></div>
+    <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
+  </section>
+
+  <section class="section" id="save-the-date">
+    <div class="section-branch left"></div>
+    <div class="section-branch right"></div>
+    <div class="section-head reveal">
+      <span class="eyebrow">The Wedding</span>
+      <p>CEREMONY</p>
+      <span class="eyebrow">10 AM</span>
+      <p>St. Mary's Forane Church, Alakode</p>
+      <p>The countdown has begun — join us as we begin our forever.</p>
+    </div>
+    <div class="countdown reveal" id="countdown">
+      <div class="count-box">
+        <div class="num" id="cd-days">00</div>
+        <div class="lbl">Days</div>
+      </div>
+      <div class="count-box">
+        <div class="num" id="cd-hours">00</div>
+        <div class="lbl">Hours</div>
+      </div>
+      <div class="count-box">
+        <div class="num" id="cd-mins">00</div>
+        <div class="lbl">Minutes</div>
+      </div>
+      <div class="count-box">
+        <div class="num" id="cd-secs">00</div>
+        <div class="lbl">Seconds</div>
+      </div>
+    </div>
+    <div class="photo-grid reveal">
+      <div class="ph" data-full="https://picsum.photos/seed/std1/900/1200"><img src="pic1.jpeg" alt="The couple"
+          loading="lazy">
+        <div class="cap">The Announcement</div>
+      </div>
+      <div class="ph" data-full="https://picsum.photos/seed/std2/900/1200"><img src="pic2.jpeg" alt="Golden hour"
+          loading="lazy">
+        <div class="cap">Golden Hour</div>
+      </div>
+      <div class="ph" data-full="https://picsum.photos/seed/std3/900/1200"><img src="pic3.jpeg" alt="Holding hands"
+          loading="lazy">
+        <div class="cap">Hand in Hand</div>
+      </div>
+      <div class="ph" data-full="https://picsum.photos/seed/std4/900/1200"><img src="pic4.jpeg" alt="Us" loading="lazy">
+        <div class="cap">Us, Always</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wave"><svg viewBox="0 0 1440 70" preserveAspectRatio="none">
+      <path d="M0,30 C400,80 1040,-10 1440,30 L1440,70 L0,70 Z" fill="#E7F1F7"></path>
+    </svg></div>
+
+  <section class="section" id="galleryus">
+    <div class="section-head reveal">
+      <span class="eyebrow">Beginning of Forever</span>
+      <h2>Two Hearts, One Journey</h2>
+    </div>
+    <div class="story-grid reveal">
+      <div class="story-img-wrapper">
+        <img src="image3.jpeg" alt="Theres and Midhun">
+      </div>
+      <div class="story-text">
+        <h4>"It is not built of grand designs,<br>
+
+          nor finished on the day we vow,<br>
+
+          but in the quiet, patient lines<br>
+
+          of choosing us, forever now—<br>
+
+          a roof against the wind and stone,<br>
+
+          two souls who never walk alone."</h3>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="videos">
+    <div class="section-branch left"></div>
+    <div class="section-branch right"></div>
+    <div class="section-head reveal">
+      <span class="eyebrow">For our loved ones</span>
+      <h2>Exclusive Videos</h2>
+      <p>A few moments we've captured along the way — tap to watch.</p>
+    </div>
+    <div class="insta-reels-container reveal">
+      <div class="insta-card" data-title="The Proposal" onclick="openReelModal('video1.mp4', 'The Proposal')">
+        <video src="video1.mp4" preload="metadata" autoplay muted loop playsinline></video>
+        <div class="insta-overlay"></div>
+        <span class="insta-badge">Exclusive</span>
+        <button class="insta-sound-btn" onclick="toggleSound(event, this)">
+          <svg class="sound-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+            fill="none">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+        </button>
+        <div class="insta-title">The Proposal</div>
+      </div>
+
+      <div class="insta-card" data-title="Our Journey" onclick="openReelModal('video2.mp4', 'Our Journey')">
+        <video src="video2.mp4" preload="metadata" autoplay muted loop playsinline></video>
+        <div class="insta-overlay"></div>
+        <span class="insta-badge">Exclusive</span>
+        <button class="insta-sound-btn" onclick="toggleSound(event, this)">
+          <svg class="sound-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+            fill="none">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+        </button>
+        <div class="insta-title">Our Journey</div>
+      </div>
+
+      <div class="insta-card" data-title="Special Memories" onclick="openReelModal('video3.mp4', 'Special Memories')">
+        <video src="video3.mp4" preload="metadata" autoplay muted loop playsinline></video>
+        <div class="insta-overlay"></div>
+        <span class="insta-badge">Exclusive</span>
+        <button class="insta-sound-btn" onclick="toggleSound(event, this)">
+          <svg class="sound-icon" viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2"
+            fill="none">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+        </button>
+        <div class="insta-title">Special Memories</div>
+      </div>
+    </div>
+
+    <div id="reelModal" class="insta-modal" onclick="closeReelModal()">
+      <div class="insta-modal-content" onclick="event.stopPropagation()">
+        <span class="insta-close-btn" onclick="closeReelModal()">&times;</span>
+        <video id="modalVideo" controls autoplay playsinline></video>
+        <h3 id="modalTitle"></h3>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="journey">
+    <div class="section-branch left"></div>
+    <div class="section-branch right"></div>
+    <div class="section-head reveal">
+      <span class="eyebrow">The celebration</span>
+      <h2>Our Journey</h2>
+      <p>Five milestones, one beautiful road to forever.</p>
+    </div>
+    <div class="roadmap-container reveal">
+      <div class="roadmap-line-bg">
+        <div class="roadmap-line-progress" id="roadmapProgress"></div>
+      </div>
+      <div class="roadmap" id="roadmap">
+        <div class="rm-step" data-date="2026-03-21">
+          <div class="rm-num">01</div>
+          <div class="rm-step-content">
+            <h3>Fixation</h3>
+            <p>Families formalize alliance.</p>
+          </div>
+        </div>
+        <div class="rm-step" data-date="2026-11-16">
+          <div class="rm-num">02</div>
+          <div class="rm-step-content">
+            <h3>Engagement</h3>
+            <div class="rm-date">16 Nov 2026</div>
+            <p>A beautiful "Yes"</p>
+          </div>
+        </div>
+        <div class="rm-step" data-date="2026-11-21">
+          <div class="rm-num">03</div>
+          <div class="rm-step-content">
+            <h3>Marriage</h3>
+            <div class="rm-date">21 Nov 2026</div>
+            <p>Becoming one.</p>
+          </div>
+        </div>
+        <div class="rm-step" data-date="2026-11-21">
+          <div class="rm-num">04</div>
+          <div class="rm-step-content">
+            <h3>Reception</h3>
+            <div class="rm-date">21 Nov 2026</div>
+            <p>Grand celebration.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="family">
+    <div class="section-branch left"></div>
+    <div class="section-branch right"></div>
+    <div class="section-head reveal">
+      <span class="eyebrow">With love and gratitude</span>
+      <h2>Family Details</h2>
+    </div>
+    <div class="family-cols reveal">
+      <div class="family-card">
+        <h3>Groom's Family</h3>
+        <span class="eyebrow sub">Midhun</span>
+        <div class="member">
+          <div class="avatar"></div>
+          <div>
+            <div class="m-name">Mr. George Devasia</div>
+            <div class="m-rel">Father</div>
+          </div>
+        </div>
+        <div class="member">
+          <div class="avatar"></div>
+          <div>
+            <div class="m-name">Mrs. Shanty George</div>
+            <div class="m-rel">Mother</div>
+          </div>
+        </div>
+        <div class="member">
+          <div class="avatar"></div>
+          <div>
+            <div class="m-name">Mr. Jithin &amp; Mrs. Mariya</div>
+            <div class="m-rel">Brother &amp; Sister-in-law</div>
+          </div>
+        </div>
+        <div class="member">
+          <div class="avatar"></div>
+          <div>
+            <div class="m-name">Mr. Athul George</div>
+            <div class="m-rel">Brother</div>
+          </div>
+        </div>
+      </div>
+      <div class="family-card">
+        <h3>Bride's Family</h3>
+        <span class="eyebrow sub">Theres</span>
+        <div class="member">
+          <div class="avatar"></div>
+          <div>
+            <div class="m-name">Mr. Mathew Philipose</div>
+            <div class="m-rel">Father</div>
+          </div>
+        </div>
+        <div class="member">
+          <div class="avatar"></div>
+          <div>
+            <div class="m-name">Mrs. Salimma Mathew</div>
+            <div class="m-rel">Mother</div>
+          </div>
+        </div>
+        <div class="member">
+          <div class="avatar"></div>
+          <div>
+            <div class="m-name">Mrs. Mintu &amp; Mr. Jobin</div>
+            <div class="m-rel">Sister &amp; Brother-in-law (Joanna, Jonath, Jonita)</div>
+          </div>
+        </div>
+        <div class="member">
+          <div class="avatar"></div>
+          <div>
+            <div class="m-name">Mrs. Shintu &amp; Mr. Don Bosco</div>
+            <div class="m-rel">Sister &amp; Brother-in-law (Isaiah, Olivia)</div>
+          </div>
+        </div>
+        <div class="member">
+          <div class="avatar"></div>
+          <div>
+            <div class="m-name">Mr. Tomin &amp; Mrs. Anns mol</div>
+            <div class="m-rel">Brother &amp; Sister-in-law</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="location">
+    <div class="wedding-location-section reveal">
+      <div class="location-card">
+        <h2>Wedding Location</h2>
+        <p class="location-name">St. Mary's Forane Church, Alakode</p>
+        <div class="map-container">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d124772.35616785819!2d75.3402349805626!3d12.239060674060564!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba444f62d3232b3%3A0x7e5dd19498de1e1f!2sSt.%20Mary's%20Forane%20Church%2C%20Alakode!5e0!3m2!1sen!2sin!4v1785857544604!5m2!1sen!2sin"
+            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+            referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+        <div class="location-actions">
+          <div class="qr-box">
+            <img src="qr.PNG" alt="Location QR Code" class="qr-image">
+            <span>Scan to Navigate</span>
+          </div>
+          <div class="link-box">
+            <p>Having trouble viewing the map? Open it directly on your phone.</p>
+            <a href="https://maps.app.goo.gl/e5c5wY79CVUtzfuo7" target="_blank" class="map-btn">
+              Open in Google Maps
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="wishes">
+    <div class="section-branch left"></div>
+    <div class="section-branch right"></div>
+    <div class="section-head reveal">
+      <h2>Leave Your Wishes</h2>
+    </div>
+    <div class="wishes-wrap reveal">
+      <form class="wish-form" id="wishForm"
+        action="https://docs.google.com/forms/u/1/d/e/1FAIpQLScFDfgZKJ74I1vgkjwp6_a2VTOBIQIJeoibeVxrK_rSqhZRMw/formResponse?pli=1"
+        method="POST" target="gform_silent_target">
+        <input type="hidden" name="fvv" value="1">
+        <input type="hidden" name="pageHistory" value="0">
+        <input type="hidden" name="fbzx" value="4040917774078391540">
+        <input type="text" name="entry.1038824486" id="wishName" placeholder="Your name" required autocomplete="name">
+        <textarea name="entry.1886068785" id="wishText" placeholder="Write your warm wishes &amp; blessings..."
+          required></textarea>
+        <button type="submit" class="btn" id="wishSubmitBtn">Send Wishes</button>
+      </form>
+      <iframe name="gform_silent_target" id="gform_silent_target" style="display:none;" aria-hidden="true"></iframe>
+      <div class="wish-list" id="wishList"></div>
+    </div>
+  </section>
+  <section class="section" id="gallery">
+    <div class="section-branch left"></div>
+    <div class="section-branch right"></div>
+    <div class="section-head reveal">
+      <span class="eyebrow">Captured Moments</span>
+      <h2>Our Photo Gallery</h2>
+      <p>Flip through some of our favorite memories together.</p>
+    </div>
+    <div class="flipbook reveal">
+      <div class="flip-stage">
+        <img id="flipImg" src="car.jpeg" alt="Gallery photo" loading="lazy">
+        <div class="flip-count" id="flipCount">1 / 9</div>
+      </div>
+      <div class="flip-controls">
+        <button class="flip-btn prev" id="prevPhoto" aria-label="Previous Photo">&#8249;</button>
+        <button class="flip-btn next" id="nextPhoto">Next Photo &#8250;</button>
+      </div>
+    </div>
+  </section>
+  <div class="music-player-btn" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle Background Music">
+    <svg id="playIcon" viewBox="0 0 24 24">
+      <path d="M8 5v14l11-7z" />
+    </svg>
+    <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;">
+      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+    </svg>
+  </div>
+
+  <audio id="bgMusic" loop>
+    <source src="whatsap.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <footer>
+    <div class="script">Theres &amp; Midhun</div>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script>
+    const bgMusic = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
+
+    function updateMusicButtonState() {
+      if (!bgMusic || !musicBtn) return;
+      if (bgMusic.paused) {
+        musicBtn.classList.remove('playing');
+        if (playIcon) playIcon.style.display = 'block';
+        if (pauseIcon) pauseIcon.style.display = 'none';
+        musicBtn.setAttribute('aria-label', 'Play Background Music');
+        musicBtn.setAttribute('title', 'Play Music');
+      } else {
+        musicBtn.classList.add('playing');
+        if (playIcon) playIcon.style.display = 'none';
+        if (pauseIcon) pauseIcon.style.display = 'block';
+        musicBtn.setAttribute('aria-label', 'Pause Background Music');
+        musicBtn.setAttribute('title', 'Pause Music');
+      }
+    }
+
+    function toggleMusic() {
+      if (!bgMusic) return;
+      if (bgMusic.paused) {
+        bgMusic.play().then(() => {
+          updateMusicButtonState();
+        }).catch(error => {
+          console.log("Audio playback prevented:", error);
+        });
+      } else {
+        bgMusic.pause();
+        updateMusicButtonState();
+      }
+    }
+
+    if (bgMusic) {
+      bgMusic.addEventListener('play', updateMusicButtonState);
+      bgMusic.addEventListener('pause', updateMusicButtonState);
+    }
+
+    const WEDDING = {
+      weddingDateISO: "2026-11-21T10:00:00",
+      venueLat: 11.8745,
+      venueLng: 75.3704,
+    };
+
+    const shimmerField = document.getElementById('shimmerField');
+    if (shimmerField) {
+      const snowChars = ['❄', '❅', '❆', '✦', '✧', '•'];
+      for (let i = 0; i < 60; i++) {
+        const flake = document.createElement('div');
+        flake.className = 'snowflake';
+        flake.textContent = snowChars[Math.floor(Math.random() * snowChars.length)];
+        flake.style.left = (Math.random() * 100) + 'vw';
+        const size = 8 + Math.random() * 18;
+        flake.style.fontSize = size + 'px';
+        const opacity = 0.3 + Math.random() * 0.6;
+        flake.style.setProperty('--snow-opacity', opacity);
+        const fallDuration = 15 + Math.random() * 25;
+        const swayDuration = 3 + Math.random() * 4;
+        flake.style.animationDuration = fallDuration + 's, ' + swayDuration + 's';
+        flake.style.animationDelay = (Math.random() * -30) + 's, ' + (Math.random() * -5) + 's';
+        shimmerField.appendChild(flake);
+      }
+    }
+
+    const roadmapSteps = document.querySelectorAll('#roadmap .rm-step');
+    const roadmapProgress = document.getElementById('roadmapProgress');
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    let completedCount = 0;
+    roadmapSteps.forEach(step => {
+      const eventDate = new Date(step.dataset.date); eventDate.setHours(0, 0, 0, 0);
+      if (eventDate < today) { step.classList.add('completed'); completedCount++; }
+    });
+    if (roadmapSteps.length > 1) {
+      const progressPercentage = completedCount > 0 ? (completedCount / roadmapSteps.length) * 100 : 0;
+      setTimeout(() => {
+        roadmapProgress.style.width = `${progressPercentage}%`;
+      }, 400);
+    }
+
+    const weddingDate = new Date(WEDDING.weddingDateISO).getTime();
+    function updateCountdown() {
+      const diff = Math.max(0, weddingDate - Date.now());
+      document.getElementById('cd-days').textContent = String(Math.floor(diff / 86400000)).padStart(2, '0');
+      document.getElementById('cd-hours').textContent = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
+      document.getElementById('cd-mins').textContent = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+      document.getElementById('cd-secs').textContent = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+    }
+    updateCountdown(); setInterval(updateCountdown, 1000);
+
+    const io = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); }); }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  </script>
+  <script>
+    /* ============ FLIPBOOK GALLERY LOGIC ============ */
+    const galleryImages = [
+      'car.jpeg',
+      'image2.jpeg'
+    ];
+
+    let currentGalleryIdx = 0;
+
+    const flipImg = document.getElementById('flipImg');
+    const flipCount = document.getElementById('flipCount');
+    const nextBtn = document.getElementById('nextPhoto');
+    const prevBtn = document.getElementById('prevPhoto');
+
+    function updateGallery(newIndex) {
+      if (!flipImg) return;
+
+      // Trigger flip animation
+      flipImg.classList.add('turning');
+
+      setTimeout(() => {
+        currentGalleryIdx = newIndex;
+        flipImg.src = galleryImages[currentGalleryIdx];
+
+        if (flipCount) {
+          flipCount.textContent = `${currentGalleryIdx + 1} / ${galleryImages.length}`;
+        }
+
+        flipImg.classList.remove('turning');
+      }, 250);
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        const nextIdx = (currentGalleryIdx + 1) % galleryImages.length;
+        updateGallery(nextIdx);
+      });
+    }
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        const prevIdx = (currentGalleryIdx - 1 + galleryImages.length) % galleryImages.length;
+        updateGallery(prevIdx);
+      });
+    }
+
+  </script>
+
+  <!-- ========================================================
+       LUXURY WEDDING POPUP DIALOGS (CONFIRM, SUCCESS & NOTICE)
+  ======================================================== -->
+  <div class="wedding-modal-overlay" id="weddingModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="wedding-modal-card">
+      <button class="modal-close-btn" id="modalCloseBtn" type="button" aria-label="Close dialog">&times;</button>
+      <div class="celebrate-sparkles" id="modalSparkles"></div>
+
+      <div class="modal-icon-badge" id="modalIconBadge">
+        <!-- Dynamic icon inserted here -->
+      </div>
+
+      <h3 class="modal-title" id="modalTitle">Confirm Your Wishes</h3>
+      <div class="modal-script" id="modalScript">Theres &amp; Midhun</div>
+      <p class="modal-desc" id="modalDesc">Please review your message before sending.</p>
+
+      <div class="modal-preview-box" id="modalPreviewBox" style="display: none;">
+        <div class="modal-preview-label">Your Message Preview</div>
+        <div class="modal-preview-name" id="modalPreviewName"></div>
+        <div class="modal-preview-msg" id="modalPreviewMsg"></div>
+      </div>
+
+      <div class="modal-actions" id="modalActions">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* ========================================================
+       STYLISH POPUP MODALS & WISH FORM SUBMISSION LOGIC
+    ======================================================== */
+    (function initWeddingModals() {
+      const weddingModal = document.getElementById('weddingModal');
+      const modalCloseBtn = document.getElementById('modalCloseBtn');
+      const modalIconBadge = document.getElementById('modalIconBadge');
+      const modalTitle = document.getElementById('modalTitle');
+      const modalScript = document.getElementById('modalScript');
+      const modalDesc = document.getElementById('modalDesc');
+      const modalPreviewBox = document.getElementById('modalPreviewBox');
+      const modalPreviewName = document.getElementById('modalPreviewName');
+      const modalPreviewMsg = document.getElementById('modalPreviewMsg');
+      const modalActions = document.getElementById('modalActions');
+      const modalSparkles = document.getElementById('modalSparkles');
+
+      const wishForm = document.getElementById('wishForm');
+      const wishNameInput = document.getElementById('wishName');
+      const wishTextInput = document.getElementById('wishText');
+      const wishList = document.getElementById('wishList');
+
+      if (!weddingModal) return;
+
+      function openModal() {
+        weddingModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        weddingModal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      if (modalCloseBtn) {
+        modalCloseBtn.addEventListener('click', closeModal);
+      }
+
+      weddingModal.addEventListener('click', (e) => {
+        if (e.target === weddingModal) {
+          closeModal();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && weddingModal.classList.contains('active')) {
+          closeModal();
+        }
+      });
+
+      function escapeHtml(str) {
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      function triggerCelebrationSparkles() {
+        if (!modalSparkles) return;
+        modalSparkles.innerHTML = '';
+        const colors = ['#C6A15B', '#deb872', '#7FA8C9', '#E7CFC1', '#FFD700'];
+        for (let i = 0; i < 24; i++) {
+          const spark = document.createElement('span');
+          spark.className = 'sparkle-dot';
+          const size = Math.floor(Math.random() * 7 + 4);
+          spark.style.width = size + 'px';
+          spark.style.height = size + 'px';
+          spark.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+          spark.style.left = '50%';
+          spark.style.top = '50%';
+          const angle = Math.random() * 2 * Math.PI;
+          const dist = Math.random() * 160 + 60;
+          const tx = Math.cos(angle) * dist + 'px';
+          const ty = Math.sin(angle) * dist + 'px';
+          spark.style.setProperty('--tx', tx);
+          spark.style.setProperty('--ty', ty);
+          spark.style.animationDelay = (Math.random() * 0.2) + 's';
+          modalSparkles.appendChild(spark);
+        }
+      }
+
+      // 1. CONFIRMATION POPUP MODAL
+      function showConfirmDialog(name, message, onConfirmCallback) {
+        modalIconBadge.className = 'modal-icon-badge';
+        modalIconBadge.innerHTML = `
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="color: var(--gold);">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        `;
+        modalTitle.textContent = "Confirm Your Wishes";
+        modalScript.textContent = "Theres & Midhun's Celebration";
+        modalDesc.textContent = "Would you like to send this heartfelt blessing to the bride and groom?";
+
+        modalPreviewBox.style.display = 'block';
+        modalPreviewName.textContent = name;
+        modalPreviewMsg.textContent = `“${message}”`;
+
+        modalActions.innerHTML = `
+          <button type="button" class="modal-btn modal-btn-cancel" id="modalCancelBtn">Edit Message</button>
+          <button type="button" class="modal-btn modal-btn-primary" id="modalConfirmBtn">Yes, Send Wishes 💌</button>
+        `;
+
+        document.getElementById('modalCancelBtn').addEventListener('click', closeModal);
+        document.getElementById('modalConfirmBtn').addEventListener('click', () => {
+          const btn = document.getElementById('modalConfirmBtn');
+          btn.disabled = true;
+          btn.textContent = "Sending with love...";
+          onConfirmCallback();
+        });
+
+        openModal();
+      }
+
+      // 2. SUCCESS CELEBRATION POPUP MODAL
+      function showSuccessDialog(name) {
+        modalIconBadge.className = 'modal-icon-badge success-badge';
+        modalIconBadge.innerHTML = `
+          <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--gold);">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+          </svg>
+        `;
+        modalTitle.textContent = "Warmest Thanks!";
+        modalScript.textContent = "Theres & Midhun";
+        modalDesc.innerHTML = `Dear <strong>${escapeHtml(name)}</strong>, your lovely wishes and blessings have been warmly received. Thank you for celebrating this joy with us! ✨`;
+
+        modalPreviewBox.style.display = 'none';
+
+        modalActions.innerHTML = `
+          <button type="button" class="modal-btn modal-btn-primary" id="modalSuccessCloseBtn">Celebrate &amp; View 🥂</button>
+        `;
+
+        document.getElementById('modalSuccessCloseBtn').addEventListener('click', closeModal);
+
+        triggerCelebrationSparkles();
+        openModal();
+      }
+
+      // 3. NOTICE / GENTLE ALERT POPUP MODAL
+      function showNoticeDialog(title, message) {
+        modalIconBadge.className = 'modal-icon-badge';
+        modalIconBadge.innerHTML = `
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--gold);">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        `;
+        modalTitle.textContent = title;
+        modalScript.textContent = "Theres & Midhun";
+        modalDesc.textContent = message;
+        modalPreviewBox.style.display = 'none';
+
+        modalActions.innerHTML = `
+          <button type="button" class="modal-btn modal-btn-primary" id="modalNoticeCloseBtn">Understood</button>
+        `;
+
+        document.getElementById('modalNoticeCloseBtn').addEventListener('click', closeModal);
+        openModal();
+      }
+
+      // ATTACH TO WISH FORM
+      if (wishForm) {
+        wishForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          const name = (wishNameInput ? wishNameInput.value : '').trim();
+          const message = (wishTextInput ? wishTextInput.value : '').trim();
+
+          if (!name) {
+            showNoticeDialog("Please enter your name", "We would love to know who is sharing this blessing!");
+            if (wishNameInput) wishNameInput.focus();
+            return;
+          }
+
+          if (!message) {
+            showNoticeDialog("Please enter your wishes", "Please write a heartfelt message or blessing before submitting.");
+            if (wishTextInput) wishTextInput.focus();
+            return;
+          }
+
+          // Show the gorgeous confirmation modal
+          showConfirmDialog(name, message, async () => {
+            try {
+              // 1. Submit form silently via target iframe to prevent any navigation/redirect
+              wishForm.submit();
+
+              // 2. Also dispatch fetch in no-cors mode for extra reliability
+              try {
+                const formData = new FormData(wishForm);
+                fetch(wishForm.action, {
+                  method: 'POST',
+                  mode: 'no-cors',
+                  body: formData
+                }).catch(() => { });
+              } catch (_) { }
+
+              // 3. Render card dynamically to list
+              if (wishList) {
+                const card = document.createElement('div');
+                card.className = 'wish-card';
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(12px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                card.innerHTML = `
+                  <div class="w-name">${escapeHtml(name)}</div>
+                  <div class="w-msg">${escapeHtml(message)}</div>
+                `;
+                wishList.prepend(card);
+                requestAnimationFrame(() => {
+                  card.style.opacity = '1';
+                  card.style.transform = 'translateY(0)';
+                });
+              }
+
+              // 4. Reset form inputs
+              wishForm.reset();
+
+              // 5. Show celebratory success popup!
+              showSuccessDialog(name);
+            } catch (err) {
+              console.error("Error during wish submission:", err);
+              showSuccessDialog(name);
+            }
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>
