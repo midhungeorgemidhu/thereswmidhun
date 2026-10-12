@@ -31,7 +31,6 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Great+Vibes&family=Marck+Script&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Jost:wght@300;400;500;600;700&display=swap"
     rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
   <style>
     :root {
       --powder-deep: #7FA8C9;
@@ -347,13 +346,14 @@
       text-shadow:
         0 0 6px rgba(255, 255, 255, 0.6),
         0 0 12px rgba(198, 161, 91, 0.15);
-      animation: snowFall linear infinite, snowSway ease-in-out infinite;
+      animation: snowFallSway linear infinite;
       will-change: transform, opacity;
+      transform: translate3d(0, 0, 0);
     }
 
-    @keyframes snowFall {
+    @keyframes snowFallSway {
       0% {
-        transform: translateY(0) rotate(0deg);
+        transform: translate3d(0, 0, 0) rotate(0deg);
         opacity: 0;
       }
 
@@ -361,33 +361,25 @@
         opacity: var(--snow-opacity, 0.8);
       }
 
+      25% {
+        transform: translate3d(14px, 28vh, 0) rotate(90deg);
+      }
+
+      50% {
+        transform: translate3d(-10px, 55vh, 0) rotate(180deg);
+      }
+
+      75% {
+        transform: translate3d(16px, 82vh, 0) rotate(270deg);
+      }
+
       90% {
         opacity: var(--snow-opacity, 0.8);
       }
 
       100% {
-        transform: translateY(110vh) rotate(360deg);
+        transform: translate3d(0, 110vh, 0) rotate(360deg);
         opacity: 0;
-      }
-    }
-
-    @keyframes snowSway {
-
-      0%,
-      100% {
-        margin-left: 0;
-      }
-
-      25% {
-        margin-left: 15px;
-      }
-
-      50% {
-        margin-left: -10px;
-      }
-
-      75% {
-        margin-left: 20px;
       }
     }
 
@@ -2512,6 +2504,11 @@
       opacity: 0;
       visibility: hidden;
       pointer-events: none;
+      display: none !important;
+    }
+
+    .royal-opening-overlay.closed * {
+      animation-play-state: paused !important;
     }
 
     .opening-particles {
@@ -4183,6 +4180,59 @@
       background: #C6A15B !important;
       color: #142e42 !important;
     }
+
+    /* ========================================================
+       SMOOTH SCROLLING & GPU COMPOSITING PERFORMANCE FIXES
+    ======================================================== */
+    html {
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      overflow-x: hidden;
+    }
+
+    body {
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Content visibility: only render offscreen heavy cards when near viewport */
+    .masonry-card {
+      content-visibility: auto;
+      contain-intrinsic-size: 320px 440px;
+    }
+
+    /* Prevent mobile touch gesture hijacking on map */
+    .map-container iframe {
+      pointer-events: auto;
+    }
+
+    /* Hardware accelerate heavy cards and images */
+    .photo-grid .ph,
+    .masonry-card,
+    .flip-stage,
+    .count-box,
+    .location-card,
+    .wish-form {
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    /* Optimize image rendering for speed and clarity */
+    img {
+      image-rendering: -webkit-optimize-contrast;
+    }
+
+    /* Optimize transitions for GPU compositor */
+    .reveal {
+      will-change: opacity, transform;
+    }
+
+    .reveal.is-visible {
+      will-change: auto;
+    }
   </style>
 </head>
 
@@ -4722,7 +4772,7 @@
     <span class="music-note-badge" title="Music">🎵</span>
   </div>
 
-  <audio id="bgMusic" loop>
+  <audio id="bgMusic" loop preload="none">
     <source src="whatsap.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
@@ -4739,7 +4789,6 @@
     </div>
   </footer>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
   <script>
     const bgMusic = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicBtn');
@@ -4833,9 +4882,37 @@
     }
     updateCountdown(); setInterval(updateCountdown, 1000);
 
-    const io = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('is-visible'); }); }, { threshold: 0.02, rootMargin: '0px 0px 200px 0px' });
+    const io = new IntersectionObserver((entries, observer) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('is-visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.02, rootMargin: '0px 0px 250px 0px' });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
+    // Pause heavy hero snowflakes when scrolled past hero
+    const heroSection = document.getElementById('home');
+    if (heroSection && shimmerField && 'IntersectionObserver' in window) {
+      const heroObserver = new IntersectionObserver((entries) => {
+        shimmerField.style.display = entries[0].isIntersecting ? 'block' : 'none';
+      }, { threshold: 0.05 });
+      heroObserver.observe(heroSection);
+    }
+
+    // Pause teaser video when not in viewport to save CPU & GPU
+    const reelEl = document.getElementById('reelVideo1');
+    if (reelEl && 'IntersectionObserver' in window) {
+      const reelObserver = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          reelEl.play().catch(() => {});
+        } else {
+          reelEl.pause();
+        }
+      }, { threshold: 0.2 });
+      reelObserver.observe(reelEl);
+    }
   </script>
 
   <script>
@@ -4934,6 +5011,8 @@
 
       setTimeout(() => {
         royalOpening.classList.add('closed');
+        const container = document.getElementById('openingParticles');
+        if (container) container.innerHTML = '';
         sessionStorage.setItem('invitation_opened', 'true');
       }, 700);
     }
@@ -4941,11 +5020,14 @@
     function skipRoyalInvitation() {
       if (!royalOpening) return;
       royalOpening.classList.add('closed');
+      const container = document.getElementById('openingParticles');
+      if (container) container.innerHTML = '';
       sessionStorage.setItem('invitation_opened', 'true');
     }
 
     function replayInvitation() {
       if (!royalOpening) return;
+      createOpeningSparkles();
       royalOpening.classList.remove('closed');
       royalOpening.classList.remove('unfolding');
       const waxSeal = document.getElementById('waxSeal');
@@ -4959,6 +5041,8 @@
     // Auto-check session storage
     if (sessionStorage.getItem('invitation_opened') === 'true' && royalOpening) {
       royalOpening.classList.add('closed');
+      const container = document.getElementById('openingParticles');
+      if (container) container.innerHTML = '';
     }
 
     /* ========================================================
@@ -5089,7 +5173,7 @@
         card.innerHTML = `
           ${badgeHtml}
           <div class="masonry-zoom-icon">⛶</div>
-          <img src="${photo.src}" alt="${photo.title}" loading="lazy" decoding="async" style="content-visibility:auto;">
+          <img src="${photo.src}" alt="${photo.title}" loading="lazy" decoding="async" fetchpriority="low" style="content-visibility:auto;">
           <div class="masonry-card-overlay">
             <div class="masonry-card-title">${photo.title}</div>
             <div class="masonry-card-desc">${photo.desc}</div>
@@ -5103,12 +5187,53 @@
       const filterBtns = document.querySelectorAll('.album-filters .filter-btn');
       filterBtns.forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
+      masonryRendered = true;
       renderMasonry(category);
     }
 
-    // Initialize gallery components
-    initFlipThumbnails();
-    renderMasonry('all');
+    // Performance optimization: Lazy render gallery components as user approaches them
+    let thumbnailsInitialized = false;
+    let masonryRendered = false;
+
+    function lazyInitThumbnails() {
+      if (thumbnailsInitialized) return;
+      thumbnailsInitialized = true;
+      initFlipThumbnails();
+    }
+
+    function lazyRenderMasonry() {
+      if (masonryRendered) return;
+      masonryRendered = true;
+      renderMasonry('all');
+    }
+
+    // Lazy load Flipbook thumbnails when approaching #gallery
+    const gallerySection = document.getElementById('gallery');
+    if (gallerySection && 'IntersectionObserver' in window) {
+      const galleryObs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          lazyInitThumbnails();
+          galleryObs.disconnect();
+        }
+      }, { rootMargin: '400px 0px' });
+      galleryObs.observe(gallerySection);
+    } else {
+      setTimeout(lazyInitThumbnails, 800);
+    }
+
+    // Lazy load 37 Masonry cards when approaching #album
+    const albumEl = document.getElementById('album');
+    if (albumEl && 'IntersectionObserver' in window) {
+      const albumObs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          lazyRenderMasonry();
+          albumObs.disconnect();
+        }
+      }, { rootMargin: '600px 0px' });
+      albumObs.observe(albumEl);
+    } else {
+      setTimeout(lazyRenderMasonry, 1200);
+    }
 
     /* ========================================================
        LUXURY FULLSCREEN LIGHTBOX LOGIC
