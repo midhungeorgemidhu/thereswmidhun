@@ -3680,6 +3680,266 @@
       transform: scale(2);
       transform-origin: center center;
     }
+
+    /* ========================================================
+       MOBILE-OPTIMIZED ENHANCEMENTS FOR 1280px VIEWPORT
+    ======================================================== */
+
+    /* 1) Favorite Highlights: 3 photos per row, bigger photos */
+    .favorites-showcase .photo-grid.luxury-grid {
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 26px !important;
+    }
+
+    .favorites-showcase .photo-grid .ph {
+      aspect-ratio: 3/4 !important;
+      margin-top: 0 !important;
+      border-radius: 16px !important;
+    }
+
+    .favorites-showcase .fav-badge-pill {
+      font-size: 1.15rem !important;
+      padding: 11px 26px !important;
+    }
+
+    .favorites-showcase .photo-grid .ph .cap {
+      padding: 24px 18px 16px !important;
+    }
+
+    .favorites-showcase .photo-grid .ph .cap strong {
+      font-size: 1.2rem !important;
+    }
+
+    .favorites-showcase .photo-grid .ph .cap span {
+      font-size: 0.95rem !important;
+    }
+
+    .favorites-showcase .crown-star-badge,
+    .favorites-showcase .fav-mini-star {
+      font-size: 0.95rem !important;
+      padding: 6px 14px !important;
+    }
+
+    /* 2) Wedding Location & Leave Your Wishes: Enlarged for Phone Readability */
+    .wedding-location-section {
+      padding: 60px 20px !important;
+    }
+
+    .location-card {
+      max-width: 860px !important;
+      padding: 44px 38px !important;
+      border-radius: 18px !important;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12) !important;
+    }
+
+    .location-card h2 {
+      font-size: 40px !important;
+      margin-bottom: 12px !important;
+    }
+
+    .location-name {
+      font-size: 24px !important;
+      margin-bottom: 24px !important;
+    }
+
+    .map-container {
+      height: 440px !important;
+      border-radius: 14px !important;
+      margin-bottom: 26px !important;
+    }
+
+    .location-actions {
+      gap: 32px !important;
+      margin-top: 24px !important;
+    }
+
+    .qr-box {
+      font-size: 18px !important;
+    }
+
+    .qr-image {
+      width: 150px !important;
+      height: 150px !important;
+      border-radius: 10px !important;
+      margin-bottom: 8px !important;
+    }
+
+    .link-box p {
+      font-size: 20px !important;
+      line-height: 1.5 !important;
+      margin-bottom: 16px !important;
+    }
+
+    .map-btn {
+      font-size: 20px !important;
+      padding: 16px 32px !important;
+      border-radius: 10px !important;
+    }
+
+    /* Wishes Section */
+    #wishes .section-head h2 {
+      font-size: clamp(2.4rem, 4.5vw, 3.6rem) !important;
+    }
+
+    .wishes-wrap {
+      max-width: 860px !important;
+    }
+
+    .wish-form {
+      padding: 44px 40px !important;
+      gap: 22px !important;
+      border-radius: 20px !important;
+    }
+
+    .wish-form input,
+    .wish-form textarea {
+      font-size: 1.5rem !important;
+      padding: 18px 22px !important;
+      border-radius: 12px !important;
+    }
+
+    .wish-form textarea {
+      min-height: 150px !important;
+    }
+
+    .wish-form .btn {
+      font-size: 1.4rem !important;
+      padding: 18px 48px !important;
+      border-radius: 40px !important;
+    }
+
+    #wishThanks {
+      font-size: 1.4rem !important;
+    }
+
+    /* 3) Photo Album Flipbook: Larger Photo Frame & Slide Controls */
+    #gallery .section-head h2 {
+      font-size: clamp(2.4rem, 4.5vw, 3.6rem) !important;
+    }
+
+    #gallery .section-head p {
+      font-size: 1.45rem !important;
+    }
+
+    .flipbook {
+      max-width: 840px !important;
+    }
+
+    .flip-stage-wrapper {
+      max-width: 840px !important;
+    }
+
+    .flip-stage {
+      border-radius: 20px !important;
+    }
+
+    .flip-expand-btn {
+      width: 52px !important;
+      height: 52px !important;
+      top: 18px !important;
+      right: 18px !important;
+    }
+
+    .flip-expand-btn svg {
+      width: 24px !important;
+      height: 24px !important;
+    }
+
+    .flip-caption-overlay {
+      padding: 36px 24px 20px !important;
+    }
+
+    .flip-tag {
+      font-size: 1.1rem !important;
+      margin-bottom: 6px !important;
+    }
+
+    .flip-title {
+      font-size: 1.7rem !important;
+    }
+
+    .flip-count {
+      font-size: 1.1rem !important;
+      padding: 8px 18px !important;
+      bottom: 18px !important;
+      right: 18px !important;
+    }
+
+    .flip-controls {
+      gap: 16px !important;
+      margin-top: 24px !important;
+    }
+
+    .flip-btn {
+      padding: 14px 28px !important;
+      font-size: 1.2rem !important;
+    }
+
+    .autoplay-btn {
+      font-size: 1.2rem !important;
+      padding: 14px 28px !important;
+    }
+
+    .flip-thumbs-strip {
+      gap: 12px !important;
+      margin-top: 24px !important;
+      padding: 18px 8px 10px !important;
+    }
+
+    .thumb-item {
+      flex: 0 0 85px !important;
+      height: 110px !important;
+      border-radius: 10px !important;
+    }
+
+    /* 4) Complete Wedding Album (37 Photos): 3 photos per row & enlarged cards */
+    .luxury-masonry {
+      columns: 3 320px !important;
+      column-gap: 26px !important;
+    }
+
+    .masonry-card {
+      margin-bottom: 26px !important;
+      border-radius: 16px !important;
+    }
+
+    .album-ornament {
+      font-size: 1.55rem !important;
+    }
+
+    .filter-btn {
+      font-size: 1.15rem !important;
+      padding: 12px 26px !important;
+      border-radius: 40px !important;
+    }
+
+    .masonry-card-badge {
+      font-size: 0.95rem !important;
+      padding: 6px 14px !important;
+      top: 14px !important;
+      left: 14px !important;
+      border-radius: 20px !important;
+    }
+
+    .masonry-zoom-icon {
+      width: 44px !important;
+      height: 44px !important;
+      font-size: 1.2rem !important;
+      top: 14px !important;
+      right: 14px !important;
+    }
+
+    .masonry-card-overlay {
+      padding: 24px 18px 16px !important;
+    }
+
+    .masonry-card-title {
+      font-size: 1.3rem !important;
+    }
+
+    .masonry-card-desc {
+      font-size: 1.05rem !important;
+    }
   </style>
 </head>
 
@@ -3839,7 +4099,7 @@
         <!-- 1. CROWN FAVORITE: SSK02723.jpg (MIDHUN'S FAV) -->
         <div class="ph crown-favorite" data-full="SSK02723.jpg" onclick="openPhotoInLightbox(0)"
           title="Click to view full photo">
-          <span class="crown-star-badge">❤️ Midhun's Favorite</span>
+          <span class="crown-star-badge">❤️Favorite</span>
           <img src="SSK02723.jpg" alt="Our Forever Beginning - Midhun's Favorite" loading="eager" fetchpriority="high">
           <div class="cap">
             <strong>Our Forever Beginning</strong>
@@ -5013,7 +5273,7 @@
         </div>
         <div class="lightbox-info">
           <div class="lightbox-meta">
-            <span class="lightbox-badge" id="lightboxBadge">⭐ Midhun's Favorite</span>
+            <span class="lightbox-badge" id="lightboxBadge">⭐ Favorite</span>
             <span class="lightbox-counter" id="lightboxCounter">1 / 37</span>
           </div>
           <h3 class="lightbox-title" id="lightboxTitle"></h3>
