@@ -3940,6 +3940,249 @@
     .masonry-card-desc {
       font-size: 1.05rem !important;
     }
+
+    /* ===== ENLARGED SONG / MUSIC BUTTON ===== */
+    .music-player-btn {
+      position: fixed !important;
+      bottom: 35px !important;
+      left: 35px !important;
+      width: 90px !important;
+      height: 90px !important;
+      background: radial-gradient(circle at 35% 30%, #ffffff 0%, #f4f8fa 65%, #e1ebf2 100%) !important;
+      border: 3px solid #C6A15B !important;
+      border-radius: 50% !important;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4), 0 0 24px rgba(198, 161, 91, 0.55) !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      z-index: 999999 !important;
+      cursor: pointer !important;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease !important;
+    }
+
+    .music-player-btn:hover {
+      transform: scale(1.12) !important;
+      box-shadow: 0 16px 45px rgba(0, 0, 0, 0.5), 0 0 35px rgba(198, 161, 91, 0.9) !important;
+    }
+
+    .music-player-btn svg {
+      width: 44px !important;
+      height: 44px !important;
+      fill: #142e42 !important;
+      filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.25)) !important;
+    }
+
+    .music-player-btn.playing {
+      border-color: #ECC880 !important;
+      animation: musicDiscPulse 2s infinite alternate ease-in-out !important;
+    }
+
+    @keyframes musicDiscPulse {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(198, 161, 91, 0.5);
+      }
+      100% {
+        transform: scale(1.08);
+        box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 42px rgba(236, 200, 128, 0.95);
+      }
+    }
+
+    .music-note-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: linear-gradient(135deg, #ECC880 0%, #C6A15B 100%);
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+      border: 2px solid #ffffff;
+      pointer-events: none;
+    }
+
+    /* ===== LUXURY FULLSCREEN LIGHTBOX ENHANCEMENTS ===== */
+    .wedding-lightbox {
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 1000000 !important;
+      display: none;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 18px !important;
+      background: rgba(8, 17, 25, 0.95) !important;
+      backdrop-filter: blur(18px) !important;
+      -webkit-backdrop-filter: blur(18px) !important;
+    }
+
+    .wedding-lightbox.active {
+      display: flex !important;
+      animation: lightboxFadeIn 0.3s ease !important;
+    }
+
+    .lightbox-container {
+      position: relative !important;
+      z-index: 10 !important;
+      max-width: 96vw !important;
+      width: 96vw !important;
+      max-height: 96vh !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+    }
+
+    /* Big, easily tappable Close button */
+    .lightbox-close {
+      position: fixed !important;
+      top: 24px !important;
+      right: 28px !important;
+      background: rgba(18, 34, 46, 0.88) !important;
+      border: 2px solid #C6A15B !important;
+      color: #ffffff !important;
+      padding: 12px 28px !important;
+      border-radius: 40px !important;
+      font-family: 'Jost', sans-serif !important;
+      font-size: 1.35rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.08em !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 8px !important;
+      box-shadow: 0 10px 32px rgba(0, 0, 0, 0.65), 0 0 25px rgba(198, 161, 91, 0.45) !important;
+      transition: all 0.25s ease !important;
+      z-index: 1000010 !important;
+    }
+
+    .lightbox-close:hover {
+      background: #C6A15B !important;
+      color: #142e42 !important;
+      transform: scale(1.06) !important;
+    }
+
+    .lightbox-nav-btn {
+      position: absolute !important;
+      top: 45% !important;
+      transform: translateY(-50%) !important;
+      background: rgba(18, 34, 46, 0.8) !important;
+      border: 2px solid rgba(198, 161, 91, 0.7) !important;
+      color: #ffffff !important;
+      width: 72px !important;
+      height: 72px !important;
+      border-radius: 50% !important;
+      font-size: 3rem !important;
+      line-height: 1 !important;
+      cursor: pointer !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      transition: all 0.25s ease !important;
+      z-index: 25 !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6) !important;
+    }
+
+    .lightbox-nav-btn:hover {
+      background: #C6A15B !important;
+      color: #142e42 !important;
+      transform: translateY(-50%) scale(1.08) !important;
+    }
+
+    .lightbox-nav-btn.lb-prev {
+      left: 16px !important;
+    }
+
+    .lightbox-nav-btn.lb-next {
+      right: 16px !important;
+    }
+
+    .lightbox-img-wrap {
+      position: relative !important;
+      max-height: 78vh !important;
+      max-width: 90vw !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    .lightbox-img-wrap img {
+      max-width: 90vw !important;
+      max-height: 78vh !important;
+      object-fit: contain !important;
+      border-radius: 16px !important;
+      box-shadow: 0 35px 95px rgba(0, 0, 0, 0.88), 0 0 45px rgba(198, 161, 91, 0.35) !important;
+      border: 2px solid rgba(198, 161, 91, 0.4) !important;
+      cursor: pointer !important;
+    }
+
+    .lightbox-info {
+      margin-top: 16px !important;
+      text-align: center !important;
+      color: #ffffff !important;
+      max-width: 820px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      gap: 8px !important;
+    }
+
+    .lightbox-meta {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 16px !important;
+    }
+
+    .lightbox-badge {
+      font-size: 1.05rem !important;
+      padding: 6px 18px !important;
+      border-radius: 20px !important;
+    }
+
+    .lightbox-counter {
+      font-size: 1.15rem !important;
+      font-weight: 600 !important;
+      color: #ECC880 !important;
+    }
+
+    .lightbox-title {
+      font-size: 1.75rem !important;
+      color: #ffffff !important;
+      margin: 0 !important;
+    }
+
+    .lightbox-desc {
+      font-size: 1.15rem !important;
+      color: #d1e2ee !important;
+      margin: 0 !important;
+    }
+
+    .lightbox-back-btn {
+      margin-top: 10px !important;
+      background: rgba(255, 255, 255, 0.12) !important;
+      border: 1px solid rgba(198, 161, 91, 0.6) !important;
+      color: #ECC880 !important;
+      padding: 10px 28px !important;
+      border-radius: 30px !important;
+      font-family: 'Jost', sans-serif !important;
+      font-size: 1.1rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.08em !important;
+      cursor: pointer !important;
+      transition: all 0.25s ease !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+    }
+
+    .lightbox-back-btn:hover {
+      background: #C6A15B !important;
+      color: #142e42 !important;
+    }
   </style>
 </head>
 
@@ -4469,13 +4712,14 @@
       <div class="luxury-masonry" id="luxuryMasonry"></div>
     </div>
   </section>
-  <div class="music-player-btn" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle Background Music">
+  <div class="music-player-btn" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle Background Music" title="Play / Pause Wedding Song">
     <svg id="playIcon" viewBox="0 0 24 24">
-      <path d="M8 5v14l11-7z" />
+      <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
     </svg>
     <svg id="pauseIcon" viewBox="0 0 24 24" style="display: none;">
       <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
     </svg>
+    <span class="music-note-badge" title="Music">🎵</span>
   </div>
 
   <audio id="bgMusic" loop>
@@ -4635,7 +4879,11 @@
       { src: 'SSK03287.jpg', title: 'Vows of Devotion', tag: 'romantic', desc: 'A lifetime of love in every smile' },
       { src: 'SSK03450.jpg', title: 'Heartfelt Harmony', tag: 'portrait', desc: 'Together in faith and devotion' },
       { src: 'SSK09901.jpg', title: 'Celebration of Us', tag: 'candid', desc: 'Counting down the days to November 21' },
-      { src: 'SSK09976.jpg', title: 'Forever More', tag: 'romantic', desc: 'To love, cherish, and honor always' }];
+      { src: 'SSK09976.jpg', title: 'Forever More', tag: 'romantic', desc: 'To love, cherish, and honor always' },
+      { src: 'pic1.jpeg', title: 'The Announcement', tag: 'candid', desc: 'The day we announced our union' },
+      { src: 'image3.jpeg', title: 'Beginning of Forever', tag: 'portrait', desc: 'A love story written in grace' },
+      { src: 'car.jpeg', title: 'The Getaway', tag: 'candid', desc: 'Driving toward our new life together' }
+    ];
 
     /* ========================================================
        ROYAL OPENING INVITATION EXPERIENCE
@@ -4873,9 +5121,35 @@
     const lightboxTitle = document.getElementById('lightboxTitle');
     const lightboxDesc = document.getElementById('lightboxDesc');
 
-    function openPhotoInLightbox(index) {
+    function openPhotoInLightbox(target) {
       if (!lightboxModal) return;
-      lightboxCurrentIdx = index;
+      if (typeof target === 'number') {
+        if (target >= 0 && target < allWeddingPhotos.length) {
+          lightboxCurrentIdx = target;
+        } else {
+          lightboxCurrentIdx = 0;
+        }
+      } else if (typeof target === 'string') {
+        const cleanName = target.split('/').pop().split('?')[0];
+        const found = allWeddingPhotos.findIndex(p => p.src === cleanName || p.src === target);
+        if (found !== -1) {
+          lightboxCurrentIdx = found;
+        } else {
+          // Direct image fallback
+          if (lightboxImg) {
+            lightboxImg.style.opacity = '0';
+            lightboxImg.src = target;
+            lightboxImg.onload = () => { lightboxImg.style.opacity = '1'; };
+          }
+          if (lightboxCounter) lightboxCounter.textContent = '';
+          if (lightboxBadge) { lightboxBadge.style.display = 'inline-block'; lightboxBadge.textContent = '⭐ FAVORITE'; }
+          if (lightboxTitle) lightboxTitle.textContent = 'Wedding Photograph';
+          if (lightboxDesc) lightboxDesc.textContent = 'Midhun & Theres Wedding Celebration';
+          lightboxModal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+          return;
+        }
+      }
       updateLightboxDisplay();
       lightboxModal.classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -4902,15 +5176,28 @@
       if (lightboxBadge) {
         if (photo.isFav) {
           lightboxBadge.style.display = 'inline-block';
-          lightboxBadge.textContent = "⭐ Midhun's Favorite";
+          lightboxBadge.textContent = "⭐ Favorite";
         } else {
           lightboxBadge.style.display = 'inline-block';
-          lightboxBadge.textContent = photo.tag.toUpperCase();
+          lightboxBadge.textContent = (photo.tag || 'PHOTO').toUpperCase();
         }
       }
       if (lightboxTitle) lightboxTitle.textContent = photo.title;
       if (lightboxDesc) lightboxDesc.textContent = photo.desc;
     }
+
+    // Universal click handler: Any photo clicked in Favorite Highlights or Our Photo Album opens the popup
+    document.addEventListener('click', (e) => {
+      const imgTarget = e.target.closest('.favorites-showcase img, #gallery img, .photo-grid img, .masonry-card img, .flip-stage img');
+      if (imgTarget) {
+        const parentWithClick = imgTarget.closest('[onclick]');
+        // If parent doesn't have an onclick, open via image src
+        if (!parentWithClick) {
+          const src = imgTarget.getAttribute('src');
+          if (src) openPhotoInLightbox(src);
+        }
+      }
+    });
 
     function lightboxNext() {
       lightboxCurrentIdx = (lightboxCurrentIdx + 1) % allWeddingPhotos.length;
@@ -5262,14 +5549,14 @@
   <div id="weddingLightbox" class="wedding-lightbox" role="dialog" aria-modal="true" aria-label="Photo Lightbox">
     <div class="lightbox-backdrop" onclick="closeLightbox()"></div>
     <div class="lightbox-container">
-      <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close photo view">&times;</button>
+      <button class="lightbox-close" onclick="closeLightbox()" aria-label="Close photo view">✕ Close</button>
 
       <button class="lightbox-nav-btn lb-prev" onclick="lightboxPrev()" aria-label="Previous photo">&#8249;</button>
       <button class="lightbox-nav-btn lb-next" onclick="lightboxNext()" aria-label="Next photo">&#8250;</button>
 
       <div class="lightbox-content">
         <div class="lightbox-img-wrap">
-          <img id="lightboxImg" src="" alt="Enlarged wedding photo">
+          <img id="lightboxImg" src="" alt="Enlarged wedding photo" onclick="closeLightbox()" title="Click image or Close button to return">
         </div>
         <div class="lightbox-info">
           <div class="lightbox-meta">
@@ -5278,6 +5565,7 @@
           </div>
           <h3 class="lightbox-title" id="lightboxTitle"></h3>
           <p class="lightbox-desc" id="lightboxDesc"></p>
+          <button class="lightbox-back-btn" onclick="closeLightbox()" aria-label="Back to Album">← Back to Album</button>
         </div>
       </div>
     </div>
