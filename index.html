@@ -3979,6 +3979,7 @@
         transform: scale(1);
         box-shadow: 0 10px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(198, 161, 91, 0.5);
       }
+
       100% {
         transform: scale(1.08);
         box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 42px rgba(236, 200, 128, 0.95);
@@ -4350,7 +4351,7 @@
         <div class="hero-date-big"></div>
         <div class="hero-venue">St. Mary's Forane Church • Alakode, Kannur</div>
       </div>
-      <a href="" class="hero-cta">November 21, 2026</a>
+      <a href="#journey" class="hero-cta">November 21, 2026</a>
     </div>
     <div class="hero-scene" role="img" aria-label="Watercolor illustration of the couple"></div>
     <div class="scroll-cue"><span>Scroll</span><span class="line"></span></div>
@@ -4762,7 +4763,8 @@
       <div class="luxury-masonry" id="luxuryMasonry"></div>
     </div>
   </section>
-  <div class="music-player-btn" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle Background Music" title="Play / Pause Wedding Song">
+  <div class="music-player-btn" id="musicBtn" onclick="toggleMusic()" aria-label="Toggle Background Music"
+    title="Play / Pause Wedding Song">
     <svg id="playIcon" viewBox="0 0 24 24">
       <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z" />
     </svg>
@@ -4906,7 +4908,7 @@
     if (reelEl && 'IntersectionObserver' in window) {
       const reelObserver = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
-          reelEl.play().catch(() => {});
+          reelEl.play().catch(() => { });
         } else {
           reelEl.pause();
         }
@@ -4937,6 +4939,7 @@
       { src: 'SSK00554.jpg', title: 'Sweet Serenade', tag: 'portrait', desc: 'Lost in each other’s eyes' },
       { src: 'SSK00578.jpg', title: 'Golden Hour Glow', tag: 'romantic', desc: 'Sun kissed by the evening warmth' },
       { src: 'SSK00643.jpg', title: 'Sunset Silhouette', tag: 'candid', desc: 'Under the golden Kerala twilight' }
+    ];
 
     /* ========================================================
        ROYAL OPENING INVITATION EXPERIENCE
@@ -5657,7 +5660,8 @@
 
       <div class="lightbox-content">
         <div class="lightbox-img-wrap">
-          <img id="lightboxImg" src="" alt="Enlarged wedding photo" onclick="closeLightbox()" title="Click image or Close button to return">
+          <img id="lightboxImg" src="" alt="Enlarged wedding photo" onclick="closeLightbox()"
+            title="Click image or Close button to return">
         </div>
         <div class="lightbox-info">
           <div class="lightbox-meta">
@@ -5666,7 +5670,8 @@
           </div>
           <h3 class="lightbox-title" id="lightboxTitle"></h3>
           <p class="lightbox-desc" id="lightboxDesc"></p>
-          <button class="lightbox-back-btn" onclick="closeLightbox()" aria-label="Back to Album">← Back to Album</button>
+          <button class="lightbox-back-btn" onclick="closeLightbox()" aria-label="Back to Album">← Back to
+            Album</button>
         </div>
       </div>
     </div>
