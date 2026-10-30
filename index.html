@@ -4704,46 +4704,12 @@
       <span class="eyebrow">Captured Memories</span>
       <h2>Our Photo Album</h2>
       <p>Flip through our curated highlights or browse all wedding shoot photographs below.</p>
-    </div>
-
-    <!-- 3D FLIPBOOK ALBUM -->
-    <div class="flipbook reveal">
-      <div class="flip-stage-wrapper">
-        <div class="flip-stage" id="flipStage" onclick="openCurrentFlipInLightbox()">
-          <img id="flipImg" src="SSK02723.jpg" alt="Gallery photo" loading="eager">
-          <div class="flip-caption-overlay" id="flipCaptionOverlay">
-            <span class="flip-tag" id="flipTag">⭐Favorite</span>
-            <div class="flip-title" id="flipTitle">Our Forever Beginning</div>
-          </div>
-          <div class="flip-count" id="flipCount">1</div>
-          <button class="flip-expand-btn" title="View Fullscreen Lightbox" aria-label="View Fullscreen"
-            onclick="event.stopPropagation(); openCurrentFlipInLightbox();">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"></path>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <div class="flip-controls">
-        <button class="flip-btn prev" id="prevPhoto" aria-label="Previous Photo">&#8249;</button>
-        <button class="flip-btn autoplay-btn" id="autoPlayBtn" aria-label="Toggle Auto Slideshow"
-          onclick="toggleAutoSlideshow()">
-          <span id="autoPlayIcon">▶</span> <span id="autoPlayText">Auto Play</span>
-        </button>
-        <button class="flip-btn next" id="nextPhoto" aria-label="Next Photo">Next Photo &#8250;</button>
-      </div>
-
-      <!-- Quick Thumbnail Scroller -->
-      <div class="flip-thumbs-strip" id="flipThumbsStrip"></div>
-    </div>
-
-    <!-- COMPLETE MASONRY ALBUM (ALL 37 PHOTOS) -->
-    <div class="masonry-album-wrap reveal" id="album">
+     <div class="masonry-album-wrap reveal" id="album">
       <div class="album-divider">
         <span class="album-line"></span>
         <span class="album-ornament">✦ The Complete Wedding Album ✦</span>
         <span class="album-line"></span>
+    </div>
       </div>
 
       <!-- Dynamic Masonry Container -->
@@ -4912,14 +4878,13 @@
       // THE 5 CROWN FAVORITES (TOP OF THE LIST)
       { src: 'SSK03455.jpeg', title: 'Tender Glance', tag: 'favorite', desc: 'Every glance tells our beautiful story' },
       { src: 'SSK02723.jpg', title: 'Our Forever Beginning', tag: 'favorite'},
-      { src: 'SSK00137.jpg', title: 'Whispers of Love', tag: 'favorite', desc: 'A tender, romantic portrait in the golden light', isFav: true },
       { src: 'SSK00261.jpg', title: 'Radiant Laughter', tag: 'favorite', desc: 'Pure joy and spontaneous laughter together', isFav: true },
+      { src: 'SSK00072.jpg', title: 'Tender Glance', tag: 'favorite', desc: 'Every glance tells our beautiful story' },
       { src: 'SSK03062.jpg', title: 'Soul in Harmony', tag: 'favorite', desc: 'Standing side by side, looking at forever', isFav: true },
       { src: 'SSK03001.jpg', title: 'Timeless Embrace', tag: 'favorite', desc: 'Warmth, love, and a quiet promise', isFav: true },
       { src: 'SSK00666.jpg', title: 'Whispers of Love', tag: 'favorite', desc: 'A tender, romantic portrait in the golden light', isFav: true },
       { src: 'SSK03360.jpeg', title: 'Radiant Laughter', tag: 'favorite', desc: 'Pure joy and spontaneous laughter together', isFav: true },      
-      { src: 'SSK00056.jpg', title: 'Gentle Smile', tag: 'favorite', desc: 'Captured in the gentle morning breeze' },
-      { src: 'SSK00072.jpg', title: 'Tender Glance', tag: 'favorite', desc: 'Every glance tells our beautiful story' }
+      { src: 'SSK00056.jpg', title: 'Gentle Smile', tag: 'favorite', desc: 'Captured in the gentle morning breeze' }
     ];
 
     /* ========================================================
